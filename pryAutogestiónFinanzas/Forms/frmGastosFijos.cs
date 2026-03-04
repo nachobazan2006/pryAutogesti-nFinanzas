@@ -1,36 +1,438 @@
 ﻿using Guna.UI2.WinForms;
+using pryAutogestionFinanzas.Models;
+using pryAutogestionFinanzas.Services;
+using pryAutoGestionFinanzas.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace pryAutogestiónFinanzas
+namespace pryAutogestionFinanzas
 {
     public partial class frmGastosFijos : Form
     {
+        private readonly CatalogosService _catalogosService;
+        private readonly MovimientosService _movimientosService;
+
+        // Modo edición
+        private bool _modoEdicion = false;
+        private int? _idEditando = null;
+
         public frmGastosFijos()
         {
             InitializeComponent();
+
+            var api = new ApiClient();
+            _catalogosService = new CatalogosService(api);
+            _movimientosService = new MovimientosService(api);
+
+            // Asegura Load (por si el Designer no lo enganchó)
+            this.Load += frmGastosFijos_Load;
+
+            // Eventos
+            dgvMovimientos.CellClick += dgvMovimientos_CellClick;
+            btnEditar.Click += btnEditar_Click;
+            btnEliminar.Click += btnEliminar_Click;
+            btnAgregar.Click += btnAgregar_Click;
         }
+
+        // --------------------------
+        // LOAD
+        // --------------------------
+        private async void frmGastosFijos_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                ConfigurarGrilla();
+                await CargarCatalogosAsync();
+                await CargarFijosEnGrillaAsync();
+                SalirModoEdicion(); // arranca limpio
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error en Load: " + ex.Message);
+            }
+        }
+
+        // --------------------------
+        // CARGAR CATEGORÍAS Y MEDIOS
+        // --------------------------
+        private async Task CargarCatalogosAsync()
+        {
+            var data = await _catalogosService.GetCatalogosAsync();
+
+            var categoriasEgreso = data.Categorias
+                .Where(c => string.Equals((c.Tipo ?? "").Trim(), "Egreso", StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            cboCategoria.DataSource = categoriasEgreso;
+            cboCategoria.DisplayMember = "Nombre";
+            cboCategoria.ValueMember = "Id";
+
+            cboMedioPago.DataSource = data.MediosPago;
+            cboMedioPago.DisplayMember = "Nombre";
+            cboMedioPago.ValueMember = "Id";
+        }
+
+        // --------------------------
+        // CARGAR SOLO FIJOS EN GRILLA (mapeo a GridRow)
+        // --------------------------
+        private async Task CargarFijosEnGrillaAsync()
+        {
+            var lista = await _movimientosService.GetByTipoAsync("Egreso");
+
+            var fijos = lista
+                .Where(x => (x.Descripcion ?? "").TrimStart().StartsWith("[FIJO]", StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(x => x.Fecha)
+                .Select(MapToGridRow)
+                .ToList();
+
+            dgvMovimientos.DataSource = null;
+            dgvMovimientos.DataSource = fijos;
+            dgvMovimientos.ClearSelection();
+        }
+
+        private static GastoFijoGridRow MapToGridRow(MovimientoDto x)
+        {
+            var desc = (x.Descripcion ?? "").Trim();
+
+            // Esperado: [FIJO] Nombre|Notas: ...
+            var sinPrefijo = desc;
+            if (sinPrefijo.StartsWith("[FIJO]", StringComparison.OrdinalIgnoreCase))
+                sinPrefijo = sinPrefijo.Substring(6).Trim();
+
+            string nombre = sinPrefijo;
+            string notas = "";
+
+            var partes = sinPrefijo.Split(new[] { "|Notas:" }, StringSplitOptions.None);
+            if (partes.Length >= 1) nombre = partes[0].Trim();
+            if (partes.Length >= 2) notas = partes[1].Trim();
+
+            // Fallback viejo: "\nNotas:"
+            if (partes.Length == 1 && sinPrefijo.Contains("\nNotas:"))
+            {
+                var p2 = sinPrefijo.Split(new[] { "\nNotas:" }, StringSplitOptions.None);
+                nombre = (p2.Length >= 1 ? p2[0] : "").Trim();
+                notas = (p2.Length >= 2 ? p2[1] : "").Trim();
+            }
+
+            return new GastoFijoGridRow
+            {
+                Id = x.Id,
+                NombreGasto = nombre,
+                Categoria = x.Categoria ?? "",
+                Monto = x.Monto,
+                Vencimiento = x.Fecha,
+                MedioPago = x.MedioPago ?? "",
+                Notas = notas
+            };
+        }
+
+        // --------------------------
+        // CONFIGURAR GRILLA
+        // --------------------------
+        private void ConfigurarGrilla()
+        {
+            dgvMovimientos.AutoGenerateColumns = false;
+            dgvMovimientos.ReadOnly = true;
+            dgvMovimientos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvMovimientos.MultiSelect = false;
+            dgvMovimientos.AllowUserToAddRows = false;
+            dgvMovimientos.AllowUserToDeleteRows = false;
+            dgvMovimientos.AllowUserToResizeRows = false;
+            dgvMovimientos.RowHeadersVisible = false;
+
+            dgvMovimientos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvMovimientos.EnableHeadersVisualStyles = false;
+            dgvMovimientos.BorderStyle = BorderStyle.None;
+            dgvMovimientos.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            dgvMovimientos.BackgroundColor = Color.FromArgb(12, 18, 35);
+            dgvMovimientos.GridColor = Color.FromArgb(35, 45, 70);
+
+            dgvMovimientos.ColumnHeadersHeight = 42;
+            dgvMovimientos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(16, 28, 52);
+            dgvMovimientos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvMovimientos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+
+            dgvMovimientos.DefaultCellStyle.BackColor = Color.FromArgb(12, 18, 35);
+            dgvMovimientos.DefaultCellStyle.ForeColor = Color.WhiteSmoke;
+            dgvMovimientos.DefaultCellStyle.SelectionBackColor = Color.FromArgb(35, 90, 180);
+            dgvMovimientos.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvMovimientos.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(14, 22, 42);
+
+            // Mapeo columnas (según tus nombres)
+            if (dgvMovimientos.Columns.Contains("colId"))
+            {
+                dgvMovimientos.Columns["colId"].DataPropertyName = "Id";
+                dgvMovimientos.Columns["colId"].Visible = false; // recomendado
+            }
+
+            if (dgvMovimientos.Columns.Contains("colNombreGasto"))
+                dgvMovimientos.Columns["colNombreGasto"].DataPropertyName = "NombreGasto";
+
+            if (dgvMovimientos.Columns.Contains("colCategoria"))
+                dgvMovimientos.Columns["colCategoria"].DataPropertyName = "Categoria";
+
+            if (dgvMovimientos.Columns.Contains("colMonto"))
+            {
+                dgvMovimientos.Columns["colMonto"].DataPropertyName = "Monto";
+                dgvMovimientos.Columns["colMonto"].DefaultCellStyle.Format = "N0";
+                dgvMovimientos.Columns["colMonto"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+
+            if (dgvMovimientos.Columns.Contains("colVencimiento"))
+            {
+                dgvMovimientos.Columns["colVencimiento"].DataPropertyName = "Vencimiento";
+                dgvMovimientos.Columns["colVencimiento"].DefaultCellStyle.Format = "dd/MM/yyyy";
+            }
+
+            if (dgvMovimientos.Columns.Contains("colMedioPago"))
+                dgvMovimientos.Columns["colMedioPago"].DataPropertyName = "MedioPago";
+
+            if (dgvMovimientos.Columns.Contains("colNotas"))
+                dgvMovimientos.Columns["colNotas"].DataPropertyName = "Notas";
+        }
+
+        // --------------------------
+        // SELECCIÓN EN GRILLA -> precarga
+        // --------------------------
+        private void dgvMovimientos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            PrecargarDesdeFilaSeleccionada();
+        }
+
+        private void PrecargarDesdeFilaSeleccionada()
+        {
+            if (dgvMovimientos.CurrentRow?.DataBoundItem is not GastoFijoGridRow row) return;
+
+            _idEditando = row.Id;
+
+            txtNombreGasto.Text = row.NombreGasto;
+            txtMonto.Text = row.Monto.ToString("0.##");
+            txtNotas.Text = row.Notas;
+            dtpVencimiento.Value = row.Vencimiento;
+
+            // Setear combos por texto (porque la grilla trae Nombre, no Id)
+            SeleccionarComboPorTexto(cboCategoria, row.Categoria);
+            SeleccionarComboPorTexto(cboMedioPago, row.MedioPago);
+        }
+
+        private static void SeleccionarComboPorTexto(ComboBox combo, string texto)
+        {
+            if (combo.DataSource == null) return;
+
+            for (int i = 0; i < combo.Items.Count; i++)
+            {
+                combo.SelectedIndex = i;
+                var current = combo.Text?.Trim() ?? "";
+                if (string.Equals(current, texto?.Trim() ?? "", StringComparison.OrdinalIgnoreCase))
+                    return;
+            }
+        }
+
+        // --------------------------
+        // BOTÓN EDITAR: entra a modo edición
+        // --------------------------
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            SetActiveButton((Guna2Button)sender);
+
+            if (dgvMovimientos.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccioná un gasto fijo de la tabla para editar.");
+                return;
+            }
+
+            PrecargarDesdeFilaSeleccionada();
+
+            if (_idEditando == null)
+            {
+                MessageBox.Show("No se pudo obtener el ID del registro (revisá colId).");
+                return;
+            }
+
+            EntrarModoEdicion();
+        }
+
+        private void EntrarModoEdicion()
+        {
+            _modoEdicion = true;
+            btnAgregar.Text = "Actualizar";
+        }
+
+        private void SalirModoEdicion()
+        {
+            _modoEdicion = false;
+            _idEditando = null;
+            btnAgregar.Text = "Agregar";
+            dgvMovimientos.ClearSelection();
+        }
+
+        // --------------------------
+        // BOTÓN ELIMINAR
+        // --------------------------
+        private async void btnEliminar_Click(object sender, EventArgs e)
+        {
+            SetActiveButton((Guna2Button)sender);
+
+            if (dgvMovimientos.CurrentRow?.DataBoundItem is not GastoFijoGridRow row)
+            {
+                MessageBox.Show("Seleccioná un gasto fijo para eliminar.");
+                return;
+            }
+
+            var ok = MessageBox.Show(
+                $"¿Eliminar el gasto fijo '{row.NombreGasto}'?",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (ok != DialogResult.Yes) return;
+
+            try
+            {
+                await _movimientosService.DeleteAsync(row.Id);
+                MessageBox.Show("✅ Eliminado.");
+
+                LimpiarFormulario();
+                SalirModoEdicion();
+                await CargarFijosEnGrillaAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Error al eliminar: " + ex.Message);
+            }
+        }
+
+        // --------------------------
+        // AGREGAR / ACTUALIZAR (mismo botón)
+        // --------------------------
+        private async void btnAgregar_Click(object sender, EventArgs e)
+        {
+            SetActiveButton((Guna2Button)sender);
+
+            try
+            {
+                var nombre = (txtNombreGasto.Text ?? "").Trim();
+                if (string.IsNullOrWhiteSpace(nombre))
+                {
+                    MessageBox.Show("Ingresá el nombre del gasto.");
+                    return;
+                }
+
+                if (!decimal.TryParse(txtMonto.Text, out decimal monto) || monto <= 0)
+                {
+                    MessageBox.Show("Monto inválido.");
+                    return;
+                }
+
+                var notas = (txtNotas.Text ?? "").Trim();
+                var descripcionFinal = $"[FIJO] {nombre}|Notas: {notas}";
+
+                var dto = new CreateMovimientoDto
+                {
+                    Tipo = "Egreso",
+                    CategoriaId = (int)cboCategoria.SelectedValue,
+                    MedioPagoId = (int)cboMedioPago.SelectedValue,
+                    Monto = monto,
+                    Fecha = dtpVencimiento.Value,
+                    Descripcion = descripcionFinal
+                };
+
+                if (_modoEdicion)
+                {
+                    if (_idEditando == null)
+                    {
+                        MessageBox.Show("No hay ID para actualizar. Seleccioná un registro y tocá Editar.");
+                        return;
+                    }
+
+                    await _movimientosService.UpdateAsync(_idEditando.Value, dto);
+                    MessageBox.Show("✅ Actualizado.");
+                }
+                else
+                {
+                    await _movimientosService.CreateAsync(dto);
+                    MessageBox.Show("✅ Guardado.");
+                }
+
+                LimpiarFormulario();
+                SalirModoEdicion();
+                await CargarFijosEnGrillaAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Error: " + ex.Message);
+            }
+        }
+
+        // --------------------------
+        // LIMPIAR FORM
+        // --------------------------
+        private void LimpiarFormulario()
+        {
+            txtNombreGasto.Clear();
+            txtMonto.Clear();
+            txtNotas.Clear();
+            dtpVencimiento.Value = DateTime.Now;
+
+            cboCategoria.SelectedIndex = cboCategoria.Items.Count > 0 ? 0 : -1;
+            cboMedioPago.SelectedIndex = cboMedioPago.Items.Count > 0 ? 0 : -1;
+        }
+
+        // --------------------------
+        // UI (botón activo)
+        // --------------------------
         private void SetActiveButton(Guna2Button btn)
         {
             foreach (Control c in panelLateral.Controls)
             {
                 if (c is Guna2Button b)
-                    b.FillColor = Color.FromArgb(52, 72, 97); // normal
+                    b.FillColor = Color.FromArgb(52, 72, 97);
             }
-
-            btn.FillColor = Color.FromArgb(113, 99, 199); // activo
+            btn.FillColor = Color.FromArgb(113, 99, 199);
         }
 
-        private void btnAgregar_Click(object sender, EventArgs e)
+        // --------------------------
+        // ViewModel para grilla de FIJOS
+        // --------------------------
+        private class GastoFijoGridRow
         {
-            SetActiveButton((Guna2Button)sender);
-
+            public int Id { get; set; }
+            public string NombreGasto { get; set; } = "";
+            public string Categoria { get; set; } = "";
+            public decimal Monto { get; set; }
+            public DateTime Vencimiento { get; set; }
+            public string MedioPago { get; set; } = "";
+            public string Notas { get; set; } = "";
         }
 
+        private async void btnCancelar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Salir edición + limpiar UI
+                SalirModoEdicion();
+                LimpiarFormulario(); // en ingresos es LimpiarForm()
+
+                // Limpia selección de grilla
+                dgvMovimientos.ClearSelection();
+
+                // (Opcional) recargar para dejar todo consistente
+                // GastosLibres: await CargarEgresosEnGrillaAsync();
+                // GastosFijos:  await CargarFijosEnGrillaAsync();
+                // Ingresos:     await CargarIngresosEnGrillaAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cancelar: " + ex.Message);
+            }
+        }
     }
 }

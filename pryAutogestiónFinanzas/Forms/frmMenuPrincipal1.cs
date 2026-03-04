@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -65,6 +66,15 @@ namespace pryAutogestiónFinanzas
         {
             SetActiveNavButton((Guna.UI2.WinForms.Guna2Button)sender);
             AbrirFormulario(new frmEstadisticas());
+
+
+            var htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StatsWeb", "index.html");
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = htmlPath,
+                UseShellExecute = true
+            });
         }
         private void SetActiveNavButton(Guna.UI2.WinForms.Guna2Button activeBtn)
         {

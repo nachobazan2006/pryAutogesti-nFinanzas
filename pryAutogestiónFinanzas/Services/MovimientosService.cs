@@ -1,43 +1,45 @@
 ﻿using pryAutogestionFinanzas.Models;
-using System.Text;
-using System.Text.Json;
+using pryAutoGestionFinanzas.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace pryAutogestionFinanzas.Services
 {
     public class MovimientosService
     {
-        private readonly HttpClient _http;
+        private readonly ApiClient _api;
 
-        public MovimientosService(ApiClient apiClient)
+        public MovimientosService(ApiClient api)
         {
-            _http = apiClient.Http;
+            _api = api;
         }
 
-        public async Task<MovimientoDto?> CreateAsync(CreateMovimientoDto dto)
+        public Task<List<MovimientoDto>?> GetAllAsync()
+            => _api.GetAsync<List<MovimientoDto>>("movimientos");
+
+        public Task<MovimientoDto?> GetByIdAsync(int id)
+            => _api.GetAsync<MovimientoDto>($"movimientos/{id}");
+
+        public Task<MovimientoDto?> CreateAsync(CreateMovimientoDto dto)
+            => _api.PostAsync<MovimientoDto>("movimientos", dto);
+
+        public async Task<List<MovimientoDto>> GetByTipoAsync(string tipo)
         {
-            var json = JsonSerializer.Serialize(dto);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var lista = await GetAllAsync() ?? new List<MovimientoDto>();
 
-            var resp = await _http.PostAsync("/api/movimientos", content);
-
-            if (!resp.IsSuccessStatusCode)
-            {
-                var error = await resp.Content.ReadAsStringAsync();
-                throw new Exception(error);
-            }
-
-            var responseJson = await resp.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<MovimientoDto>(responseJson,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return lista
+                .Where(x => string.Equals(x.Tipo, tipo, StringComparison.OrdinalIgnoreCase))
+                .ToList();
         }
-        public async Task<List<dynamic>> GetByTipoAsync(string tipo)
-        {
-            var resp = await _http.GetAsync($"/api/movimientos?tipo={tipo}");
-            resp.EnsureSuccessStatusCode();
 
-            var json = await resp.Content.ReadAsStringAsync();
-            return System.Text.Json.JsonSerializer.Deserialize<List<dynamic>>(json,
-                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
-        }
+        // UPDATE (full update)
+        public Task UpdateAsync(int id, CreateMovimientoDto dto)
+            => _api.PutAsync($"movimientos/{id}", dto);
+
+        // DELETE
+        public Task DeleteAsync(int id)
+            => _api.DeleteAsync($"movimientos/{id}");
     }
 }

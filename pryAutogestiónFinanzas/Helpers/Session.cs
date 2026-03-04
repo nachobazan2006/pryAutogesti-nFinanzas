@@ -19,5 +19,6 @@ namespace pryAutogestiónFinanzas.Helpers
         {
             Usuario = "";
         }
+
     }
 }

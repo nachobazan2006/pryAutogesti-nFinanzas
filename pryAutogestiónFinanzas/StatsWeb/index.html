@@ -1,0 +1,187 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Estadísticas | AutoGestión</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo"></div>
+                <div>
+                    <div class="brandTitle">AutoGestión</div>
+                    <div class="brandSub">Estadísticas</div>
+                </div>
+            </div>
+
+            <div class="sideBlock">
+                <div class="sideLabel">Período</div>
+                <div class="filters">
+                    <label>
+                        <span>Mes</span>
+                        <input id="mes" type="number" min="1" max="12" />
+                    </label>
+
+                    <label>
+                        <span>Año</span>
+                        <input id="anio" type="number" min="2000" max="2100" />
+                    </label>
+
+                    <button id="btnCargar" class="btnPrimary">
+                        Actualizar
+                    </button>
+
+                    <button id="btnHoy" class="btnGhost">
+                        Ir a hoy
+                    </button>
+                </div>
+            </div>
+
+            <div class="sideBlock">
+                <div class="sideLabel">Estado</div>
+                <div id="status" class="status statusOk">
+                    Conectado
+                </div>
+                <div class="muted small">
+                    Si ves “Error”, revisá el puerto del API.
+                </div>
+            </div>
+
+            <div class="sideFooter muted small">
+                Local HTML • Backend REST • SQLite
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <h1 class="title">Dashboard</h1>
+                    <p class="subtitle">Resumen, evolución diaria y top categorías.</p>
+                </div>
+
+                <div class="pillRow">
+                    <div class="pill">
+                        <span class="pillLabel">Base API</span>
+                        <span id="apiBaseLabel" class="pillValue">—</span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="grid">
+                <!-- KPIs -->
+                <div class="card kpiCard">
+                    <div class="cardHead">
+                        <h2>Balance histórico</h2>
+                        <span class="tag">Acumulado</span>
+                    </div>
+                    <div class="kpis">
+                        <div class="kpi">
+                            <span>Ingresos</span>
+                            <strong id="histIngresos">—</strong>
+                        </div>
+                        <div class="kpi">
+                            <span>Egresos</span>
+                            <strong id="histEgresos">—</strong>
+                        </div>
+                        <div class="kpi">
+                            <span>Balance</span>
+                            <strong id="histBalance" class="accent">—</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card kpiCard">
+                    <div class="cardHead">
+                        <h2>Resumen del mes</h2>
+                        <span class="tag">Mes seleccionado</span>
+                    </div>
+                    <div class="kpis">
+                        <div class="kpi">
+                            <span>Ingresos</span>
+                            <strong id="mesIngresos">—</strong>
+                        </div>
+                        <div class="kpi">
+                            <span>Egresos</span>
+                            <strong id="mesEgresos">—</strong>
+                        </div>
+                        <div class="kpi">
+                            <span>Balance</span>
+                            <strong id="mesBalance" class="accent">—</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparación -->
+                <div class="card compareCard">
+                    <div class="cardHead">
+                        <h2>Comparación vs mes anterior</h2>
+                        <span class="tag">Insight</span>
+                    </div>
+
+                    <div class="compareGrid">
+                        <div class="compareBox">
+                            <div class="muted small">Variación ingresos</div>
+                            <div id="varIng" class="big">—</div>
+                        </div>
+                        <div class="compareBox">
+                            <div class="muted small">Variación egresos</div>
+                            <div id="varEgr" class="big">—</div>
+                        </div>
+                        <div class="compareBox wide">
+                            <div class="muted small">Detalle</div>
+                            <pre id="comparacion" class="mono">—</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart: Serie diaria -->
+                <div class="card chartCard">
+                    <div class="cardHead">
+                        <h2>Egresos por día</h2>
+                        <span class="tag">Barras</span>
+                    </div>
+                    <div class="chartWrap">
+                        <canvas id="chartDiario" height="220"></canvas>
+                    </div>
+                    <div class="muted small">
+                        Tip: si hay muchos días en 0, igual los mostramos para que el gráfico sea real.
+                    </div>
+                </div>
+
+                <!-- Chart: Top categorías -->
+                <div class="card chartCard">
+                    <div class="cardHead">
+                        <h2>Top categorías (Egresos)</h2>
+                        <span class="tag">Top 5</span>
+                    </div>
+                    <div class="chartWrap">
+                        <canvas id="chartTop" height="220"></canvas>
+                    </div>
+
+                    <div class="tableWrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Categoría</th>
+                                    <th class="right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topEgresosBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer muted small">
+                Hecho para WinForms + API local • Estilos: azul oscuro + grises + blanco
+            </footer>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

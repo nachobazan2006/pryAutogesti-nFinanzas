@@ -1,4 +1,4 @@
-﻿namespace pryAutogestiónFinanzas
+﻿namespace pryAutogestionFinanzas
 {
     partial class frmAhorros
     {
@@ -45,7 +45,14 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            lblAgregueMeta = new Label();
             btnAgregarMeta = new Guna.UI2.WinForms.Guna2Button();
             lblFechaAhorro = new Label();
             lblLugarGuardado = new Label();
@@ -57,10 +64,18 @@
             lblObjetivo = new Label();
             txtObjetivo = new Guna.UI2.WinForms.Guna2TextBox();
             txtNombreMeta = new Guna.UI2.WinForms.Guna2TextBox();
-            guna2DataGridView1 = new Guna.UI2.WinForms.Guna2DataGridView();
-            lblAgregueMeta = new Label();
+            dgvAhorro = new Guna.UI2.WinForms.Guna2DataGridView();
+            colMetaAhorro = new DataGridViewTextBoxColumn();
+            colObjetivo = new DataGridViewTextBoxColumn();
+            colMoneda = new DataGridViewTextBoxColumn();
+            colLugarGuardado = new DataGridViewTextBoxColumn();
+            colFechaObjetivo = new DataGridViewTextBoxColumn();
+            colId = new DataGridViewTextBoxColumn();
+            btnEditar = new Guna.UI2.WinForms.Guna2Button();
+            btnEliminar = new Guna.UI2.WinForms.Guna2Button();
+            btnCancelar = new Guna.UI2.WinForms.Guna2Button();
             guna2Panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)guna2DataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvAhorro).BeginInit();
             SuspendLayout();
             // 
             // guna2Panel1
@@ -85,6 +100,16 @@
             guna2Panel1.Size = new Size(280, 901);
             guna2Panel1.TabIndex = 0;
             // 
+            // lblAgregueMeta
+            // 
+            lblAgregueMeta.Font = new Font("Century Gothic", 18F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblAgregueMeta.ForeColor = SystemColors.Window;
+            lblAgregueMeta.Location = new Point(8, 32);
+            lblAgregueMeta.Name = "lblAgregueMeta";
+            lblAgregueMeta.Size = new Size(255, 91);
+            lblAgregueMeta.TabIndex = 2;
+            lblAgregueMeta.Text = "Agregue su meta de ahorro";
+            // 
             // btnAgregarMeta
             // 
             btnAgregarMeta.Animated = true;
@@ -104,6 +129,7 @@
             btnAgregarMeta.Size = new Size(251, 43);
             btnAgregarMeta.TabIndex = 1;
             btnAgregarMeta.Text = "Agregar meta";
+            btnAgregarMeta.Click += btnAgregarMeta_Click;
             // 
             // lblFechaAhorro
             // 
@@ -115,7 +141,6 @@
             lblFechaAhorro.Size = new Size(265, 23);
             lblFechaAhorro.TabIndex = 1;
             lblFechaAhorro.Text = "Fecha objetivo (opcional)";
-            lblFechaAhorro.Click += label1_Click;
             // 
             // lblLugarGuardado
             // 
@@ -257,10 +282,10 @@
             txtNombreMeta.Size = new Size(251, 31);
             txtNombreMeta.TabIndex = 1;
             // 
-            // guna2DataGridView1
+            // dgvAhorro
             // 
             dataGridViewCellStyle1.BackColor = Color.White;
-            guna2DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgvAhorro.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(100, 88, 255);
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
@@ -268,9 +293,10 @@
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            guna2DataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            guna2DataGridView1.ColumnHeadersHeight = 4;
-            guna2DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvAhorro.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvAhorro.ColumnHeadersHeight = 4;
+            dgvAhorro.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvAhorro.Columns.AddRange(new DataGridViewColumn[] { colMetaAhorro, colObjetivo, colMoneda, colLugarGuardado, colFechaObjetivo, colId });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -278,60 +304,140 @@
             dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            guna2DataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
-            guna2DataGridView1.GridColor = Color.FromArgb(231, 229, 255);
-            guna2DataGridView1.Location = new Point(387, 147);
-            guna2DataGridView1.Name = "guna2DataGridView1";
-            guna2DataGridView1.RowHeadersVisible = false;
-            guna2DataGridView1.RowHeadersWidth = 51;
-            guna2DataGridView1.Size = new Size(843, 596);
-            guna2DataGridView1.TabIndex = 1;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.Font = null;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
-            guna2DataGridView1.ThemeStyle.BackColor = Color.White;
-            guna2DataGridView1.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
-            guna2DataGridView1.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(100, 88, 255);
-            guna2DataGridView1.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
-            guna2DataGridView1.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F);
-            guna2DataGridView1.ThemeStyle.HeaderStyle.ForeColor = Color.White;
-            guna2DataGridView1.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            guna2DataGridView1.ThemeStyle.HeaderStyle.Height = 4;
-            guna2DataGridView1.ThemeStyle.ReadOnly = false;
-            guna2DataGridView1.ThemeStyle.RowsStyle.BackColor = Color.White;
-            guna2DataGridView1.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            guna2DataGridView1.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
-            guna2DataGridView1.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
-            guna2DataGridView1.ThemeStyle.RowsStyle.Height = 29;
-            guna2DataGridView1.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            guna2DataGridView1.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dgvAhorro.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvAhorro.GridColor = Color.FromArgb(231, 229, 255);
+            dgvAhorro.Location = new Point(387, 147);
+            dgvAhorro.Name = "dgvAhorro";
+            dgvAhorro.RowHeadersVisible = false;
+            dgvAhorro.RowHeadersWidth = 51;
+            dgvAhorro.Size = new Size(843, 596);
+            dgvAhorro.TabIndex = 1;
+            dgvAhorro.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
+            dgvAhorro.ThemeStyle.AlternatingRowsStyle.Font = null;
+            dgvAhorro.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
+            dgvAhorro.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
+            dgvAhorro.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
+            dgvAhorro.ThemeStyle.BackColor = Color.White;
+            dgvAhorro.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
+            dgvAhorro.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(100, 88, 255);
+            dgvAhorro.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvAhorro.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F);
+            dgvAhorro.ThemeStyle.HeaderStyle.ForeColor = Color.White;
+            dgvAhorro.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvAhorro.ThemeStyle.HeaderStyle.Height = 4;
+            dgvAhorro.ThemeStyle.ReadOnly = false;
+            dgvAhorro.ThemeStyle.RowsStyle.BackColor = Color.White;
+            dgvAhorro.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvAhorro.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
+            dgvAhorro.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
+            dgvAhorro.ThemeStyle.RowsStyle.Height = 29;
+            dgvAhorro.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
+            dgvAhorro.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             // 
-            // lblAgregueMeta
+            // colMetaAhorro
             // 
-            lblAgregueMeta.Font = new Font("Century Gothic", 18F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblAgregueMeta.ForeColor = SystemColors.Window;
-            lblAgregueMeta.Location = new Point(8, 32);
-            lblAgregueMeta.Name = "lblAgregueMeta";
-            lblAgregueMeta.Size = new Size(255, 91);
-            lblAgregueMeta.TabIndex = 2;
-            lblAgregueMeta.Text = "Agregue su meta de ahorro";
-            lblAgregueMeta.Click += lblAgregueMeta_Click;
+            colMetaAhorro.HeaderText = "Meta";
+            colMetaAhorro.MinimumWidth = 6;
+            colMetaAhorro.Name = "colMetaAhorro";
+            // 
+            // colObjetivo
+            // 
+            colObjetivo.HeaderText = "Objetivo";
+            colObjetivo.MinimumWidth = 6;
+            colObjetivo.Name = "colObjetivo";
+            // 
+            // colMoneda
+            // 
+            colMoneda.HeaderText = "Moneda";
+            colMoneda.MinimumWidth = 6;
+            colMoneda.Name = "colMoneda";
+            // 
+            // colLugarGuardado
+            // 
+            colLugarGuardado.HeaderText = "Lugar ";
+            colLugarGuardado.MinimumWidth = 6;
+            colLugarGuardado.Name = "colLugarGuardado";
+            // 
+            // colFechaObjetivo
+            // 
+            colFechaObjetivo.HeaderText = "Fecha obj";
+            colFechaObjetivo.MinimumWidth = 6;
+            colFechaObjetivo.Name = "colFechaObjetivo";
+            // 
+            // colId
+            // 
+            colId.HeaderText = "Id";
+            colId.MinimumWidth = 6;
+            colId.Name = "colId";
+            colId.ReadOnly = true;
+            colId.Visible = false;
+            // 
+            // btnEditar
+            // 
+            btnEditar.CustomizableEdges = customizableEdges15;
+            btnEditar.DisabledState.BorderColor = Color.DarkGray;
+            btnEditar.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnEditar.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnEditar.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnEditar.Font = new Font("Segoe UI", 9F);
+            btnEditar.ForeColor = Color.White;
+            btnEditar.Location = new Point(381, 53);
+            btnEditar.Name = "btnEditar";
+            btnEditar.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btnEditar.Size = new Size(225, 56);
+            btnEditar.TabIndex = 2;
+            btnEditar.Text = "Editar";
+            // 
+            // btnEliminar
+            // 
+            btnEliminar.CustomizableEdges = customizableEdges17;
+            btnEliminar.DisabledState.BorderColor = Color.DarkGray;
+            btnEliminar.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnEliminar.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnEliminar.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnEliminar.Font = new Font("Segoe UI", 9F);
+            btnEliminar.ForeColor = Color.White;
+            btnEliminar.Location = new Point(753, 53);
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            btnEliminar.Size = new Size(225, 56);
+            btnEliminar.TabIndex = 3;
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.Click += btnEliminar_Click;
+            // 
+            // btnCancelar
+            // 
+            btnCancelar.CustomizableEdges = customizableEdges19;
+            btnCancelar.DisabledState.BorderColor = Color.DarkGray;
+            btnCancelar.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnCancelar.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnCancelar.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnCancelar.Font = new Font("Segoe UI", 9F);
+            btnCancelar.ForeColor = Color.White;
+            btnCancelar.Location = new Point(1062, 53);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            btnCancelar.Size = new Size(225, 56);
+            btnCancelar.TabIndex = 4;
+            btnCancelar.Text = "Cancelar edición";
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // frmAhorros
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1448, 868);
-            Controls.Add(guna2DataGridView1);
+            Controls.Add(btnCancelar);
+            Controls.Add(btnEliminar);
+            Controls.Add(btnEditar);
+            Controls.Add(dgvAhorro);
             Controls.Add(guna2Panel1);
             Name = "frmAhorros";
             Text = "frmAhorro";
             Load += frmAhorros_Load;
             guna2Panel1.ResumeLayout(false);
             guna2Panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)guna2DataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvAhorro).EndInit();
             ResumeLayout(false);
         }
 
@@ -349,7 +455,16 @@
         private Label lblLugarGuardado;
         private Label lblFechaAhorro;
         private Guna.UI2.WinForms.Guna2Button btnAgregarMeta;
-        private Guna.UI2.WinForms.Guna2DataGridView guna2DataGridView1;
+        private Guna.UI2.WinForms.Guna2DataGridView dgvAhorro;
         private Label lblAgregueMeta;
+        private DataGridViewTextBoxColumn colMetaAhorro;
+        private DataGridViewTextBoxColumn colObjetivo;
+        private DataGridViewTextBoxColumn colMoneda;
+        private DataGridViewTextBoxColumn colLugarGuardado;
+        private DataGridViewTextBoxColumn colFechaObjetivo;
+        private DataGridViewTextBoxColumn colId;
+        private Guna.UI2.WinForms.Guna2Button btnEditar;
+        private Guna.UI2.WinForms.Guna2Button btnEliminar;
+        private Guna.UI2.WinForms.Guna2Button btnCancelar;
     }
 }

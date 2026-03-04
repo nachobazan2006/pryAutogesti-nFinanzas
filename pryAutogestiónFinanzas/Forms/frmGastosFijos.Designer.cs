@@ -1,4 +1,4 @@
-﻿namespace pryAutogestiónFinanzas
+﻿namespace pryAutogestionFinanzas
 {
     partial class frmGastosFijos
     {
@@ -45,27 +45,40 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             lblTitulo = new Label();
             panelLateral = new Panel();
+            dtpVencimiento = new Guna.UI2.WinForms.Guna2DateTimePicker();
             btnAgregar = new Guna.UI2.WinForms.Guna2Button();
+            txtNotas = new Guna.UI2.WinForms.Guna2TextBox();
             lblNotas = new Label();
             lblMedioPago = new Label();
             lblNombreDelGasto = new Label();
             lblVencimiento = new Label();
-            txtNotas = new Guna.UI2.WinForms.Guna2TextBox();
-            lblFrecuencia = new Label();
-            cmbMedioPago = new Guna.UI2.WinForms.Guna2ComboBox();
+            cboMedioPago = new Guna.UI2.WinForms.Guna2ComboBox();
             lblMonto = new Label();
-            nupVencimiento = new NumericUpDown();
             lblCategoria = new Label();
-            cmbFrecuencia = new Guna.UI2.WinForms.Guna2ComboBox();
             txtMonto = new Guna.UI2.WinForms.Guna2TextBox();
-            cmbCategoria = new Guna.UI2.WinForms.Guna2ComboBox();
+            cboCategoria = new Guna.UI2.WinForms.Guna2ComboBox();
             txtNombreGasto = new Guna.UI2.WinForms.Guna2TextBox();
-            guna2DataGridView1 = new Guna.UI2.WinForms.Guna2DataGridView();
+            dgvMovimientos = new Guna.UI2.WinForms.Guna2DataGridView();
+            colId = new DataGridViewTextBoxColumn();
+            colNombreGasto = new DataGridViewTextBoxColumn();
+            colCategoria = new DataGridViewTextBoxColumn();
+            colMonto = new DataGridViewTextBoxColumn();
+            colVencimiento = new DataGridViewTextBoxColumn();
+            colMedioPago = new DataGridViewTextBoxColumn();
+            colNotas = new DataGridViewTextBoxColumn();
+            btnEditar = new Guna.UI2.WinForms.Guna2Button();
+            btnEliminar = new Guna.UI2.WinForms.Guna2Button();
+            btnCancelarEdicion = new Guna.UI2.WinForms.Guna2Button();
             panelLateral.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)nupVencimiento).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)guna2DataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMovimientos).BeginInit();
             SuspendLayout();
             // 
             // lblTitulo
@@ -82,20 +95,18 @@
             // panelLateral
             // 
             panelLateral.BackColor = Color.FromArgb(0, 0, 64);
+            panelLateral.Controls.Add(dtpVencimiento);
             panelLateral.Controls.Add(btnAgregar);
+            panelLateral.Controls.Add(txtNotas);
             panelLateral.Controls.Add(lblNotas);
             panelLateral.Controls.Add(lblMedioPago);
             panelLateral.Controls.Add(lblNombreDelGasto);
             panelLateral.Controls.Add(lblVencimiento);
-            panelLateral.Controls.Add(txtNotas);
-            panelLateral.Controls.Add(lblFrecuencia);
-            panelLateral.Controls.Add(cmbMedioPago);
+            panelLateral.Controls.Add(cboMedioPago);
             panelLateral.Controls.Add(lblMonto);
-            panelLateral.Controls.Add(nupVencimiento);
             panelLateral.Controls.Add(lblCategoria);
-            panelLateral.Controls.Add(cmbFrecuencia);
             panelLateral.Controls.Add(txtMonto);
-            panelLateral.Controls.Add(cmbCategoria);
+            panelLateral.Controls.Add(cboCategoria);
             panelLateral.Controls.Add(txtNombreGasto);
             panelLateral.Controls.Add(lblTitulo);
             panelLateral.Location = new Point(-3, -5);
@@ -103,11 +114,26 @@
             panelLateral.Size = new Size(280, 901);
             panelLateral.TabIndex = 1;
             // 
+            // dtpVencimiento
+            // 
+            dtpVencimiento.Checked = true;
+            dtpVencimiento.CustomizableEdges = customizableEdges1;
+            dtpVencimiento.Font = new Font("Segoe UI", 9F);
+            dtpVencimiento.Format = DateTimePickerFormat.Long;
+            dtpVencimiento.Location = new Point(15, 460);
+            dtpVencimiento.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
+            dtpVencimiento.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
+            dtpVencimiento.Name = "dtpVencimiento";
+            dtpVencimiento.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            dtpVencimiento.Size = new Size(252, 36);
+            dtpVencimiento.TabIndex = 3;
+            dtpVencimiento.Value = new DateTime(2026, 3, 2, 16, 44, 51, 45);
+            // 
             // btnAgregar
             // 
             btnAgregar.Animated = true;
             btnAgregar.BorderRadius = 10;
-            btnAgregar.CustomizableEdges = customizableEdges1;
+            btnAgregar.CustomizableEdges = customizableEdges3;
             btnAgregar.DisabledState.BorderColor = Color.DarkGray;
             btnAgregar.DisabledState.CustomBorderColor = Color.DarkGray;
             btnAgregar.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -118,18 +144,39 @@
             btnAgregar.HoverState.FillColor = Color.FromArgb(128, 255, 128);
             btnAgregar.Location = new Point(15, 787);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            btnAgregar.ShadowDecoration.CustomizableEdges = customizableEdges4;
             btnAgregar.Size = new Size(252, 51);
             btnAgregar.TabIndex = 3;
             btnAgregar.Text = "Agregar";
             btnAgregar.Click += btnAgregar_Click;
+            // 
+            // txtNotas
+            // 
+            txtNotas.BorderRadius = 10;
+            txtNotas.CustomizableEdges = customizableEdges5;
+            txtNotas.DefaultText = "";
+            txtNotas.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
+            txtNotas.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
+            txtNotas.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
+            txtNotas.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
+            txtNotas.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtNotas.Font = new Font("Segoe UI", 9F);
+            txtNotas.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtNotas.Location = new Point(15, 675);
+            txtNotas.Margin = new Padding(3, 4, 3, 4);
+            txtNotas.Name = "txtNotas";
+            txtNotas.PlaceholderText = "";
+            txtNotas.SelectedText = "";
+            txtNotas.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            txtNotas.Size = new Size(252, 72);
+            txtNotas.TabIndex = 3;
             // 
             // lblNotas
             // 
             lblNotas.AutoSize = true;
             lblNotas.Font = new Font("Century Gothic", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblNotas.ForeColor = SystemColors.Window;
-            lblNotas.Location = new Point(15, 668);
+            lblNotas.Location = new Point(15, 635);
             lblNotas.Name = "lblNotas";
             lblNotas.Size = new Size(68, 23);
             lblNotas.TabIndex = 3;
@@ -140,7 +187,7 @@
             lblMedioPago.AutoSize = true;
             lblMedioPago.Font = new Font("Century Gothic", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblMedioPago.ForeColor = SystemColors.Window;
-            lblMedioPago.Location = new Point(15, 566);
+            lblMedioPago.Location = new Point(15, 537);
             lblMedioPago.Name = "lblMedioPago";
             lblMedioPago.Size = new Size(165, 23);
             lblMedioPago.TabIndex = 7;
@@ -163,61 +210,29 @@
             lblVencimiento.AutoSize = true;
             lblVencimiento.Font = new Font("Century Gothic", 10.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblVencimiento.ForeColor = SystemColors.Window;
-            lblVencimiento.Location = new Point(15, 483);
+            lblVencimiento.Location = new Point(15, 419);
             lblVencimiento.Name = "lblVencimiento";
             lblVencimiento.Size = new Size(186, 21);
             lblVencimiento.TabIndex = 6;
             lblVencimiento.Text = "Día de vencimiento";
             // 
-            // txtNotas
+            // cboMedioPago
             // 
-            txtNotas.BorderRadius = 10;
-            txtNotas.CustomizableEdges = customizableEdges3;
-            txtNotas.DefaultText = "";
-            txtNotas.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtNotas.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtNotas.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            txtNotas.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            txtNotas.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtNotas.Font = new Font("Segoe UI", 9F);
-            txtNotas.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtNotas.Location = new Point(15, 703);
-            txtNotas.Margin = new Padding(3, 4, 3, 4);
-            txtNotas.Name = "txtNotas";
-            txtNotas.PlaceholderText = "";
-            txtNotas.SelectedText = "";
-            txtNotas.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtNotas.Size = new Size(252, 25);
-            txtNotas.TabIndex = 3;
-            // 
-            // lblFrecuencia
-            // 
-            lblFrecuencia.AutoSize = true;
-            lblFrecuencia.Font = new Font("Century Gothic", 10.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblFrecuencia.ForeColor = SystemColors.Window;
-            lblFrecuencia.Location = new Point(15, 376);
-            lblFrecuencia.Name = "lblFrecuencia";
-            lblFrecuencia.Size = new Size(110, 21);
-            lblFrecuencia.TabIndex = 5;
-            lblFrecuencia.Text = "Frecuencia";
-            // 
-            // cmbMedioPago
-            // 
-            cmbMedioPago.BackColor = Color.Transparent;
-            cmbMedioPago.BorderRadius = 10;
-            cmbMedioPago.CustomizableEdges = customizableEdges5;
-            cmbMedioPago.DrawMode = DrawMode.OwnerDrawFixed;
-            cmbMedioPago.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbMedioPago.FocusedColor = Color.FromArgb(94, 148, 255);
-            cmbMedioPago.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            cmbMedioPago.Font = new Font("Segoe UI", 10F);
-            cmbMedioPago.ForeColor = Color.FromArgb(68, 88, 112);
-            cmbMedioPago.ItemHeight = 30;
-            cmbMedioPago.Location = new Point(15, 604);
-            cmbMedioPago.Name = "cmbMedioPago";
-            cmbMedioPago.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            cmbMedioPago.Size = new Size(252, 36);
-            cmbMedioPago.TabIndex = 3;
+            cboMedioPago.BackColor = Color.Transparent;
+            cboMedioPago.BorderRadius = 10;
+            cboMedioPago.CustomizableEdges = customizableEdges7;
+            cboMedioPago.DrawMode = DrawMode.OwnerDrawFixed;
+            cboMedioPago.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboMedioPago.FocusedColor = Color.FromArgb(94, 148, 255);
+            cboMedioPago.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            cboMedioPago.Font = new Font("Segoe UI", 10F);
+            cboMedioPago.ForeColor = Color.FromArgb(68, 88, 112);
+            cboMedioPago.ItemHeight = 30;
+            cboMedioPago.Location = new Point(15, 581);
+            cboMedioPago.Name = "cboMedioPago";
+            cboMedioPago.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            cboMedioPago.Size = new Size(252, 36);
+            cboMedioPago.TabIndex = 3;
             // 
             // lblMonto
             // 
@@ -230,13 +245,6 @@
             lblMonto.TabIndex = 4;
             lblMonto.Text = "Monto";
             // 
-            // nupVencimiento
-            // 
-            nupVencimiento.Location = new Point(15, 523);
-            nupVencimiento.Name = "nupVencimiento";
-            nupVencimiento.Size = new Size(252, 27);
-            nupVencimiento.TabIndex = 3;
-            // 
             // lblCategoria
             // 
             lblCategoria.AutoSize = true;
@@ -247,24 +255,6 @@
             lblCategoria.Size = new Size(101, 21);
             lblCategoria.TabIndex = 3;
             lblCategoria.Text = "Categoría";
-            // 
-            // cmbFrecuencia
-            // 
-            cmbFrecuencia.BackColor = Color.Transparent;
-            cmbFrecuencia.BorderRadius = 10;
-            cmbFrecuencia.CustomizableEdges = customizableEdges7;
-            cmbFrecuencia.DrawMode = DrawMode.OwnerDrawFixed;
-            cmbFrecuencia.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbFrecuencia.FocusedColor = Color.FromArgb(94, 148, 255);
-            cmbFrecuencia.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            cmbFrecuencia.Font = new Font("Segoe UI", 10F);
-            cmbFrecuencia.ForeColor = Color.FromArgb(68, 88, 112);
-            cmbFrecuencia.ItemHeight = 30;
-            cmbFrecuencia.Location = new Point(15, 414);
-            cmbFrecuencia.Name = "cmbFrecuencia";
-            cmbFrecuencia.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            cmbFrecuencia.Size = new Size(252, 36);
-            cmbFrecuencia.TabIndex = 3;
             // 
             // txtMonto
             // 
@@ -287,23 +277,23 @@
             txtMonto.Size = new Size(252, 25);
             txtMonto.TabIndex = 3;
             // 
-            // cmbCategoria
+            // cboCategoria
             // 
-            cmbCategoria.BackColor = Color.Transparent;
-            cmbCategoria.BorderRadius = 10;
-            cmbCategoria.CustomizableEdges = customizableEdges11;
-            cmbCategoria.DrawMode = DrawMode.OwnerDrawFixed;
-            cmbCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbCategoria.FocusedColor = Color.FromArgb(94, 148, 255);
-            cmbCategoria.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            cmbCategoria.Font = new Font("Segoe UI", 10F);
-            cmbCategoria.ForeColor = Color.FromArgb(68, 88, 112);
-            cmbCategoria.ItemHeight = 30;
-            cmbCategoria.Location = new Point(15, 219);
-            cmbCategoria.Name = "cmbCategoria";
-            cmbCategoria.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            cmbCategoria.Size = new Size(252, 36);
-            cmbCategoria.TabIndex = 3;
+            cboCategoria.BackColor = Color.Transparent;
+            cboCategoria.BorderRadius = 10;
+            cboCategoria.CustomizableEdges = customizableEdges11;
+            cboCategoria.DrawMode = DrawMode.OwnerDrawFixed;
+            cboCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboCategoria.FocusedColor = Color.FromArgb(94, 148, 255);
+            cboCategoria.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            cboCategoria.Font = new Font("Segoe UI", 10F);
+            cboCategoria.ForeColor = Color.FromArgb(68, 88, 112);
+            cboCategoria.ItemHeight = 30;
+            cboCategoria.Location = new Point(15, 219);
+            cboCategoria.Name = "cboCategoria";
+            cboCategoria.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            cboCategoria.Size = new Size(252, 36);
+            cboCategoria.TabIndex = 3;
             // 
             // txtNombreGasto
             // 
@@ -326,10 +316,10 @@
             txtNombreGasto.Size = new Size(252, 25);
             txtNombreGasto.TabIndex = 3;
             // 
-            // guna2DataGridView1
+            // dgvMovimientos
             // 
             dataGridViewCellStyle1.BackColor = Color.White;
-            guna2DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgvMovimientos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(100, 88, 255);
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
@@ -337,9 +327,10 @@
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            guna2DataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            guna2DataGridView1.ColumnHeadersHeight = 4;
-            guna2DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvMovimientos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvMovimientos.ColumnHeadersHeight = 4;
+            dgvMovimientos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvMovimientos.Columns.AddRange(new DataGridViewColumn[] { colId, colNombreGasto, colCategoria, colMonto, colVencimiento, colMedioPago, colNotas });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -347,49 +338,144 @@
             dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            guna2DataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
-            guna2DataGridView1.GridColor = Color.FromArgb(231, 229, 255);
-            guna2DataGridView1.Location = new Point(423, 146);
-            guna2DataGridView1.Name = "guna2DataGridView1";
-            guna2DataGridView1.RowHeadersVisible = false;
-            guna2DataGridView1.RowHeadersWidth = 51;
-            guna2DataGridView1.Size = new Size(735, 596);
-            guna2DataGridView1.TabIndex = 2;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.Font = null;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
-            guna2DataGridView1.ThemeStyle.BackColor = Color.White;
-            guna2DataGridView1.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
-            guna2DataGridView1.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(100, 88, 255);
-            guna2DataGridView1.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
-            guna2DataGridView1.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F);
-            guna2DataGridView1.ThemeStyle.HeaderStyle.ForeColor = Color.White;
-            guna2DataGridView1.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            guna2DataGridView1.ThemeStyle.HeaderStyle.Height = 4;
-            guna2DataGridView1.ThemeStyle.ReadOnly = false;
-            guna2DataGridView1.ThemeStyle.RowsStyle.BackColor = Color.White;
-            guna2DataGridView1.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            guna2DataGridView1.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
-            guna2DataGridView1.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
-            guna2DataGridView1.ThemeStyle.RowsStyle.Height = 29;
-            guna2DataGridView1.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            guna2DataGridView1.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dgvMovimientos.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvMovimientos.GridColor = Color.FromArgb(231, 229, 255);
+            dgvMovimientos.Location = new Point(423, 146);
+            dgvMovimientos.Name = "dgvMovimientos";
+            dgvMovimientos.RowHeadersVisible = false;
+            dgvMovimientos.RowHeadersWidth = 51;
+            dgvMovimientos.Size = new Size(735, 596);
+            dgvMovimientos.TabIndex = 2;
+            dgvMovimientos.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
+            dgvMovimientos.ThemeStyle.AlternatingRowsStyle.Font = null;
+            dgvMovimientos.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
+            dgvMovimientos.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
+            dgvMovimientos.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
+            dgvMovimientos.ThemeStyle.BackColor = Color.White;
+            dgvMovimientos.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
+            dgvMovimientos.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(100, 88, 255);
+            dgvMovimientos.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvMovimientos.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F);
+            dgvMovimientos.ThemeStyle.HeaderStyle.ForeColor = Color.White;
+            dgvMovimientos.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvMovimientos.ThemeStyle.HeaderStyle.Height = 4;
+            dgvMovimientos.ThemeStyle.ReadOnly = false;
+            dgvMovimientos.ThemeStyle.RowsStyle.BackColor = Color.White;
+            dgvMovimientos.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvMovimientos.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
+            dgvMovimientos.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
+            dgvMovimientos.ThemeStyle.RowsStyle.Height = 29;
+            dgvMovimientos.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
+            dgvMovimientos.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            // 
+            // colId
+            // 
+            colId.HeaderText = "Id";
+            colId.MinimumWidth = 6;
+            colId.Name = "colId";
+            colId.ReadOnly = true;
+            colId.Visible = false;
+            // 
+            // colNombreGasto
+            // 
+            colNombreGasto.HeaderText = "Nombre del gasto";
+            colNombreGasto.MinimumWidth = 6;
+            colNombreGasto.Name = "colNombreGasto";
+            // 
+            // colCategoria
+            // 
+            colCategoria.HeaderText = "Categoría";
+            colCategoria.MinimumWidth = 6;
+            colCategoria.Name = "colCategoria";
+            // 
+            // colMonto
+            // 
+            colMonto.HeaderText = "Monto";
+            colMonto.MinimumWidth = 6;
+            colMonto.Name = "colMonto";
+            // 
+            // colVencimiento
+            // 
+            colVencimiento.HeaderText = "Vencimiento";
+            colVencimiento.MinimumWidth = 6;
+            colVencimiento.Name = "colVencimiento";
+            // 
+            // colMedioPago
+            // 
+            colMedioPago.HeaderText = "Medio de pago";
+            colMedioPago.MinimumWidth = 6;
+            colMedioPago.Name = "colMedioPago";
+            // 
+            // colNotas
+            // 
+            colNotas.HeaderText = "Notas";
+            colNotas.MinimumWidth = 6;
+            colNotas.Name = "colNotas";
+            // 
+            // btnEditar
+            // 
+            btnEditar.CustomizableEdges = customizableEdges15;
+            btnEditar.DisabledState.BorderColor = Color.DarkGray;
+            btnEditar.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnEditar.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnEditar.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnEditar.Font = new Font("Segoe UI", 9F);
+            btnEditar.ForeColor = Color.White;
+            btnEditar.Location = new Point(370, 65);
+            btnEditar.Name = "btnEditar";
+            btnEditar.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btnEditar.Size = new Size(225, 56);
+            btnEditar.TabIndex = 3;
+            btnEditar.Text = "Editar";
+            // 
+            // btnEliminar
+            // 
+            btnEliminar.CustomizableEdges = customizableEdges17;
+            btnEliminar.DisabledState.BorderColor = Color.DarkGray;
+            btnEliminar.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnEliminar.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnEliminar.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnEliminar.Font = new Font("Segoe UI", 9F);
+            btnEliminar.ForeColor = Color.White;
+            btnEliminar.Location = new Point(732, 75);
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            btnEliminar.Size = new Size(225, 56);
+            btnEliminar.TabIndex = 4;
+            btnEliminar.Text = "Eliminar";
+            // 
+            // btnCancelarEdicion
+            // 
+            btnCancelarEdicion.CustomizableEdges = customizableEdges19;
+            btnCancelarEdicion.DisabledState.BorderColor = Color.DarkGray;
+            btnCancelarEdicion.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnCancelarEdicion.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnCancelarEdicion.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnCancelarEdicion.Font = new Font("Segoe UI", 9F);
+            btnCancelarEdicion.ForeColor = Color.White;
+            btnCancelarEdicion.Location = new Point(1049, 65);
+            btnCancelarEdicion.Name = "btnCancelarEdicion";
+            btnCancelarEdicion.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            btnCancelarEdicion.Size = new Size(225, 56);
+            btnCancelarEdicion.TabIndex = 5;
+            btnCancelarEdicion.Text = "Cancelar edición";
+            btnCancelarEdicion.Click += btnCancelar_Click;
             // 
             // frmGastosFijos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1448, 868);
-            Controls.Add(guna2DataGridView1);
+            Controls.Add(btnCancelarEdicion);
+            Controls.Add(btnEliminar);
+            Controls.Add(btnEditar);
+            Controls.Add(dgvMovimientos);
             Controls.Add(panelLateral);
             Name = "frmGastosFijos";
             Text = "GastosFijoscs";
             panelLateral.ResumeLayout(false);
             panelLateral.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)nupVencimiento).EndInit();
-            ((System.ComponentModel.ISupportInitialize)guna2DataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMovimientos).EndInit();
             ResumeLayout(false);
         }
 
@@ -397,12 +483,10 @@
 
         private Label lblTitulo;
         private Panel panelLateral;
-        private Guna.UI2.WinForms.Guna2ComboBox cmbCategoria;
+        private Guna.UI2.WinForms.Guna2ComboBox cboCategoria;
         private Guna.UI2.WinForms.Guna2TextBox txtNombreGasto;
-        private Guna.UI2.WinForms.Guna2DataGridView guna2DataGridView1;
-        private Guna.UI2.WinForms.Guna2ComboBox cmbMedioPago;
-        private NumericUpDown nupVencimiento;
-        private Guna.UI2.WinForms.Guna2ComboBox cmbFrecuencia;
+        private Guna.UI2.WinForms.Guna2DataGridView dgvMovimientos;
+        private Guna.UI2.WinForms.Guna2ComboBox cboMedioPago;
         private Guna.UI2.WinForms.Guna2TextBox txtMonto;
         private Label lblNombreDelGasto;
         private Guna.UI2.WinForms.Guna2TextBox txtNotas;
@@ -411,7 +495,17 @@
         private Label lblMedioPago;
         private Label lblNotas;
         private Label lblCategoria;
-        protected Label lblFrecuencia;
         private Guna.UI2.WinForms.Guna2Button btnAgregar;
+        private Guna.UI2.WinForms.Guna2DateTimePicker dtpVencimiento;
+        private DataGridViewTextBoxColumn colId;
+        private DataGridViewTextBoxColumn colNombreGasto;
+        private DataGridViewTextBoxColumn colCategoria;
+        private DataGridViewTextBoxColumn colMonto;
+        private DataGridViewTextBoxColumn colVencimiento;
+        private DataGridViewTextBoxColumn colMedioPago;
+        private DataGridViewTextBoxColumn colNotas;
+        private Guna.UI2.WinForms.Guna2Button btnEditar;
+        private Guna.UI2.WinForms.Guna2Button btnEliminar;
+        private Guna.UI2.WinForms.Guna2Button btnCancelarEdicion;
     }
 }
