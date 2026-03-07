@@ -1,111 +1,149 @@
-﻿using pryAutogestionFinanzas;
+﻿using Guna.UI2.WinForms;
+using pryAutogestiónFinanzas;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 
-namespace pryAutogestiónFinanzas
+namespace pryAutogestionFinanzas
 {
     public partial class frmMenuPrincipal1 : Form
     {
+        private Form? _formActivo = null;
+
+        private readonly Color _botonNormal = Color.FromArgb(67, 89, 146);
+        private readonly Color _botonHover = Color.FromArgb(92, 113, 173);
+        private readonly Color _botonActivo = Color.FromArgb(122, 102, 214);
+        private readonly Color _textoBlanco = Color.White;
+        private readonly Color _fondoApp = Color.FromArgb(242, 244, 248);
+
         public frmMenuPrincipal1()
         {
             InitializeComponent();
-        }
-        private void frmMenuPrincipal1_Load(object sender, EventArgs e)
-        {
-            lblUsuarioActual.Text = $"Bienvenido, {Helpers.Session.Usuario}!";
-        }
-        private void AbrirFormulario(Form formHijo)
-        {
-            panelContenedor.Controls.Clear();
 
-            formHijo.TopLevel = false;
-            formHijo.FormBorderStyle = FormBorderStyle.None;
-            formHijo.Dock = DockStyle.Fill;
+            this.Load -= frmMenuPrincipal1_Load;
+            this.Load += frmMenuPrincipal1_Load;
 
-            panelContenedor.Controls.Add(formHijo);
-            formHijo.Show();
-        }
+            btnGastosFijos.Click -= BtnGastosFijos_Click;
+            btnGastosFijos.Click += BtnGastosFijos_Click;
 
-        private void btnGastosFijos_Click(object sender, EventArgs e)
-        {
-            SetActiveNavButton((Guna.UI2.WinForms.Guna2Button)sender);
-            AbrirFormulario(new frmGastosFijos());
-        }
+            btnGastosLibres.Click -= BtnGastosLibres_Click;
+            btnGastosLibres.Click += BtnGastosLibres_Click;
 
-        private void btnGastosLibres_Click(object sender, EventArgs e)
-        {
-            SetActiveNavButton((Guna.UI2.WinForms.Guna2Button)sender);
-            AbrirFormulario(new frmGastosLibres());
+            btnAhorros.Click -= BtnAhorros_Click;
+            btnAhorros.Click += BtnAhorros_Click;
+
+            btnAportes.Click -= BtnAportes_Click;
+            btnAportes.Click += BtnAportes_Click;
+
+            btnIngresos.Click -= BtnIngresos_Click;
+            btnIngresos.Click += BtnIngresos_Click;
+
+            btnEstadisticas.Click -= BtnEstadisticas_Click;
+            btnEstadisticas.Click += BtnEstadisticas_Click;
         }
 
-        private void btnAportes_Click(object sender, EventArgs e)
+        private void frmMenuPrincipal1_Load(object? sender, EventArgs e)
         {
-            SetActiveNavButton((Guna.UI2.WinForms.Guna2Button)sender);
-            AbrirFormulario(new frmAporte());
+            BackColor = _fondoApp;
+            StartPosition = FormStartPosition.CenterScreen;
+            WindowState = FormWindowState.Maximized;
+
+            ConfigurarBotonesLaterales();
+
+            ActivarBoton(btnGastosFijos);
+            AbrirFormularioEnContenedor(new frmGastosFijos());
         }
 
-        private void btnAhorros_Click(object sender, EventArgs e)
+        private void ConfigurarBotonesLaterales()
         {
-            SetActiveNavButton((Guna.UI2.WinForms.Guna2Button)sender);
-            AbrirFormulario(new frmAhorros());
-        }
+            var botones = panelLateral.Controls.OfType<Guna2Button>().ToList();
 
-        private void btnIngresos_Click(object sender, EventArgs e)
-        {
-            SetActiveNavButton((Guna.UI2.WinForms.Guna2Button)sender);
-            AbrirFormulario(new frmIngresos());
-        }
-
-        private void btnEstadisticas_Click(object sender, EventArgs e)
-        {
-            SetActiveNavButton((Guna.UI2.WinForms.Guna2Button)sender);
-            AbrirFormulario(new frmEstadisticas());
-
-
-            var htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StatsWeb", "index.html");
-
-            Process.Start(new ProcessStartInfo
+            foreach (var btn in botones)
             {
-                FileName = htmlPath,
-                UseShellExecute = true
-            });
+                btn.BorderRadius = 12;
+                btn.FillColor = _botonNormal;
+                btn.ForeColor = _textoBlanco;
+                btn.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
+                btn.HoverState.FillColor = _botonHover;
+                btn.PressedColor = _botonHover;
+                btn.Animated = true;
+                btn.Cursor = Cursors.Hand;
+                btn.TextAlign = HorizontalAlignment.Center;
+                btn.BorderThickness = 0;
+                btn.BackColor = Color.Transparent;
+            }
         }
-        private void SetActiveNavButton(Guna.UI2.WinForms.Guna2Button activeBtn)
+
+        private void ActivarBoton(Guna2Button botonActivo)
         {
-            foreach (Control c in panelLateral.Controls)
+            foreach (var btn in panelLateral.Controls.OfType<Guna2Button>())
             {
-                if (c is Guna.UI2.WinForms.Guna2Button btn)
-                {
-                    btn.FillColor = Color.FromArgb(52, 72, 97); // normal
-                    btn.ForeColor = Color.White;
-                }
+                btn.FillColor = _botonNormal;
             }
 
-            activeBtn.FillColor = Color.FromArgb(113, 99, 199); // activo (violeta)
-            activeBtn.ForeColor = Color.White;
+            botonActivo.FillColor = _botonActivo;
         }
 
- 
-
-        private void frmMenuPrincipal1_Load_1(object sender, EventArgs e)
+        private void AbrirFormularioEnContenedor(Form formularioHijo)
         {
+            if (_formActivo != null)
+            {
+                _formActivo.Close();
+                _formActivo.Dispose();
+            }
 
+            _formActivo = formularioHijo;
+
+            formularioHijo.TopLevel = false;
+            formularioHijo.FormBorderStyle = FormBorderStyle.None;
+            formularioHijo.Dock = DockStyle.Fill;
+            formularioHijo.Margin = Padding.Empty;
+            formularioHijo.Padding = Padding.Empty;
+            formularioHijo.BackColor = _fondoApp;
+
+            panelContenedor.Controls.Clear();
+            panelContenedor.Controls.Add(formularioHijo);
+            panelContenedor.Tag = formularioHijo;
+
+            formularioHijo.Show();
+            formularioHijo.BringToFront();
         }
 
-        private void panelLateral_Paint(object sender, PaintEventArgs e)
+        private void BtnGastosFijos_Click(object? sender, EventArgs e)
         {
-
+            ActivarBoton(btnGastosFijos);
+            AbrirFormularioEnContenedor(new frmGastosFijos());
         }
 
-        private void panelContenedor_Paint(object sender, PaintEventArgs e)
+        private void BtnGastosLibres_Click(object? sender, EventArgs e)
         {
+            ActivarBoton(btnGastosLibres);
+            AbrirFormularioEnContenedor(new frmGastosLibres());
+        }
 
+        private void BtnAhorros_Click(object? sender, EventArgs e)
+        {
+            ActivarBoton(btnAhorros);
+            AbrirFormularioEnContenedor(new frmAhorros());
+        }
+
+        private void BtnAportes_Click(object? sender, EventArgs e)
+        {
+            ActivarBoton(btnAportes);
+            AbrirFormularioEnContenedor(new frmAporte());
+        }
+
+        private void BtnIngresos_Click(object? sender, EventArgs e)
+        {
+            ActivarBoton(btnIngresos);
+            AbrirFormularioEnContenedor(new frmIngresos());
+        }
+
+        private void BtnEstadisticas_Click(object? sender, EventArgs e)
+        {
+            ActivarBoton(btnEstadisticas);
+            AbrirFormularioEnContenedor(new frmEstadisticas());
         }
     }
 }

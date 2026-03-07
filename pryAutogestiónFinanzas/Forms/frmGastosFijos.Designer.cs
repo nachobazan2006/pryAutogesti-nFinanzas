@@ -86,9 +86,9 @@
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Century Gothic", 18F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblTitulo.ForeColor = SystemColors.Window;
-            lblTitulo.Location = new Point(32, 30);
+            lblTitulo.Location = new Point(28, 22);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(235, 37);
+            lblTitulo.Size = new Size(189, 28);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "Agregue gasto";
             // 
@@ -109,9 +109,11 @@
             panelLateral.Controls.Add(cboCategoria);
             panelLateral.Controls.Add(txtNombreGasto);
             panelLateral.Controls.Add(lblTitulo);
-            panelLateral.Location = new Point(-3, -5);
+            panelLateral.Dock = DockStyle.Left;
+            panelLateral.Location = new Point(0, 0);
+            panelLateral.Margin = new Padding(3, 2, 3, 2);
             panelLateral.Name = "panelLateral";
-            panelLateral.Size = new Size(280, 901);
+            panelLateral.Size = new Size(245, 651);
             panelLateral.TabIndex = 1;
             // 
             // dtpVencimiento
@@ -120,12 +122,13 @@
             dtpVencimiento.CustomizableEdges = customizableEdges1;
             dtpVencimiento.Font = new Font("Segoe UI", 9F);
             dtpVencimiento.Format = DateTimePickerFormat.Long;
-            dtpVencimiento.Location = new Point(15, 460);
+            dtpVencimiento.Location = new Point(13, 345);
+            dtpVencimiento.Margin = new Padding(3, 2, 3, 2);
             dtpVencimiento.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpVencimiento.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtpVencimiento.Name = "dtpVencimiento";
             dtpVencimiento.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            dtpVencimiento.Size = new Size(252, 36);
+            dtpVencimiento.Size = new Size(220, 27);
             dtpVencimiento.TabIndex = 3;
             dtpVencimiento.Value = new DateTime(2026, 3, 2, 16, 44, 51, 45);
             // 
@@ -142,10 +145,11 @@
             btnAgregar.Font = new Font("Century Gothic", 10.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             btnAgregar.ForeColor = Color.White;
             btnAgregar.HoverState.FillColor = Color.FromArgb(128, 255, 128);
-            btnAgregar.Location = new Point(15, 787);
+            btnAgregar.Location = new Point(13, 590);
+            btnAgregar.Margin = new Padding(3, 2, 3, 2);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnAgregar.Size = new Size(252, 51);
+            btnAgregar.Size = new Size(220, 38);
             btnAgregar.TabIndex = 3;
             btnAgregar.Text = "Agregar";
             btnAgregar.Click += btnAgregar_Click;
@@ -162,13 +166,12 @@
             txtNotas.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtNotas.Font = new Font("Segoe UI", 9F);
             txtNotas.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtNotas.Location = new Point(15, 675);
-            txtNotas.Margin = new Padding(3, 4, 3, 4);
+            txtNotas.Location = new Point(13, 506);
             txtNotas.Name = "txtNotas";
             txtNotas.PlaceholderText = "";
             txtNotas.SelectedText = "";
             txtNotas.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            txtNotas.Size = new Size(252, 72);
+            txtNotas.Size = new Size(220, 54);
             txtNotas.TabIndex = 3;
             // 
             // lblNotas
@@ -176,9 +179,9 @@
             lblNotas.AutoSize = true;
             lblNotas.Font = new Font("Century Gothic", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblNotas.ForeColor = SystemColors.Window;
-            lblNotas.Location = new Point(15, 635);
+            lblNotas.Location = new Point(13, 476);
             lblNotas.Name = "lblNotas";
-            lblNotas.Size = new Size(68, 23);
+            lblNotas.Size = new Size(56, 19);
             lblNotas.TabIndex = 3;
             lblNotas.Text = "Notas";
             // 
@@ -187,9 +190,9 @@
             lblMedioPago.AutoSize = true;
             lblMedioPago.Font = new Font("Century Gothic", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblMedioPago.ForeColor = SystemColors.Window;
-            lblMedioPago.Location = new Point(15, 537);
+            lblMedioPago.Location = new Point(13, 403);
             lblMedioPago.Name = "lblMedioPago";
-            lblMedioPago.Size = new Size(165, 23);
+            lblMedioPago.Size = new Size(131, 19);
             lblMedioPago.TabIndex = 7;
             lblMedioPago.Text = "Medio de pago";
             // 
@@ -199,9 +202,9 @@
             lblNombreDelGasto.BackColor = Color.FromArgb(0, 0, 64);
             lblNombreDelGasto.Font = new Font("Century Gothic", 10.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblNombreDelGasto.ForeColor = Color.Cornsilk;
-            lblNombreDelGasto.Location = new Point(15, 97);
+            lblNombreDelGasto.Location = new Point(13, 73);
             lblNombreDelGasto.Name = "lblNombreDelGasto";
-            lblNombreDelGasto.Size = new Size(169, 21);
+            lblNombreDelGasto.Size = new Size(141, 18);
             lblNombreDelGasto.TabIndex = 3;
             lblNombreDelGasto.Text = "Nombre del gasto";
             // 
@@ -210,9 +213,9 @@
             lblVencimiento.AutoSize = true;
             lblVencimiento.Font = new Font("Century Gothic", 10.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblVencimiento.ForeColor = SystemColors.Window;
-            lblVencimiento.Location = new Point(15, 419);
+            lblVencimiento.Location = new Point(13, 314);
             lblVencimiento.Name = "lblVencimiento";
-            lblVencimiento.Size = new Size(186, 21);
+            lblVencimiento.Size = new Size(153, 18);
             lblVencimiento.TabIndex = 6;
             lblVencimiento.Text = "Día de vencimiento";
             // 
@@ -228,10 +231,11 @@
             cboMedioPago.Font = new Font("Segoe UI", 10F);
             cboMedioPago.ForeColor = Color.FromArgb(68, 88, 112);
             cboMedioPago.ItemHeight = 30;
-            cboMedioPago.Location = new Point(15, 581);
+            cboMedioPago.Location = new Point(13, 436);
+            cboMedioPago.Margin = new Padding(3, 2, 3, 2);
             cboMedioPago.Name = "cboMedioPago";
             cboMedioPago.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            cboMedioPago.Size = new Size(252, 36);
+            cboMedioPago.Size = new Size(221, 36);
             cboMedioPago.TabIndex = 3;
             // 
             // lblMonto
@@ -239,9 +243,9 @@
             lblMonto.AutoSize = true;
             lblMonto.Font = new Font("Century Gothic", 10.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblMonto.ForeColor = SystemColors.Window;
-            lblMonto.Location = new Point(15, 283);
+            lblMonto.Location = new Point(13, 212);
             lblMonto.Name = "lblMonto";
-            lblMonto.Size = new Size(71, 21);
+            lblMonto.Size = new Size(57, 18);
             lblMonto.TabIndex = 4;
             lblMonto.Text = "Monto";
             // 
@@ -250,9 +254,9 @@
             lblCategoria.AutoSize = true;
             lblCategoria.Font = new Font("Century Gothic", 10.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblCategoria.ForeColor = SystemColors.Window;
-            lblCategoria.Location = new Point(15, 183);
+            lblCategoria.Location = new Point(13, 137);
             lblCategoria.Name = "lblCategoria";
-            lblCategoria.Size = new Size(101, 21);
+            lblCategoria.Size = new Size(83, 18);
             lblCategoria.TabIndex = 3;
             lblCategoria.Text = "Categoría";
             // 
@@ -268,13 +272,12 @@
             txtMonto.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtMonto.Font = new Font("Segoe UI", 9F);
             txtMonto.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMonto.Location = new Point(15, 322);
-            txtMonto.Margin = new Padding(3, 4, 3, 4);
+            txtMonto.Location = new Point(13, 242);
             txtMonto.Name = "txtMonto";
             txtMonto.PlaceholderText = "";
             txtMonto.SelectedText = "";
             txtMonto.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            txtMonto.Size = new Size(252, 25);
+            txtMonto.Size = new Size(220, 19);
             txtMonto.TabIndex = 3;
             // 
             // cboCategoria
@@ -289,10 +292,11 @@
             cboCategoria.Font = new Font("Segoe UI", 10F);
             cboCategoria.ForeColor = Color.FromArgb(68, 88, 112);
             cboCategoria.ItemHeight = 30;
-            cboCategoria.Location = new Point(15, 219);
+            cboCategoria.Location = new Point(13, 164);
+            cboCategoria.Margin = new Padding(3, 2, 3, 2);
             cboCategoria.Name = "cboCategoria";
             cboCategoria.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            cboCategoria.Size = new Size(252, 36);
+            cboCategoria.Size = new Size(221, 36);
             cboCategoria.TabIndex = 3;
             // 
             // txtNombreGasto
@@ -307,13 +311,12 @@
             txtNombreGasto.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtNombreGasto.Font = new Font("Segoe UI", 9F);
             txtNombreGasto.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtNombreGasto.Location = new Point(15, 137);
-            txtNombreGasto.Margin = new Padding(3, 4, 3, 4);
+            txtNombreGasto.Location = new Point(13, 103);
             txtNombreGasto.Name = "txtNombreGasto";
             txtNombreGasto.PlaceholderText = "";
             txtNombreGasto.SelectedText = "";
             txtNombreGasto.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            txtNombreGasto.Size = new Size(252, 25);
+            txtNombreGasto.Size = new Size(220, 19);
             txtNombreGasto.TabIndex = 3;
             // 
             // dgvMovimientos
@@ -340,11 +343,13 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvMovimientos.DefaultCellStyle = dataGridViewCellStyle3;
             dgvMovimientos.GridColor = Color.FromArgb(231, 229, 255);
-            dgvMovimientos.Location = new Point(423, 146);
+            dgvMovimientos.Location = new Point(370, 110);
+            dgvMovimientos.Margin = new Padding(3, 2, 3, 2);
             dgvMovimientos.Name = "dgvMovimientos";
             dgvMovimientos.RowHeadersVisible = false;
             dgvMovimientos.RowHeadersWidth = 51;
-            dgvMovimientos.Size = new Size(735, 596);
+            dgvMovimientos.RowTemplate.Height = 29;
+            dgvMovimientos.Size = new Size(643, 447);
             dgvMovimientos.TabIndex = 2;
             dgvMovimientos.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvMovimientos.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -421,10 +426,11 @@
             btnEditar.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnEditar.Font = new Font("Segoe UI", 9F);
             btnEditar.ForeColor = Color.White;
-            btnEditar.Location = new Point(370, 65);
+            btnEditar.Location = new Point(324, 49);
+            btnEditar.Margin = new Padding(3, 2, 3, 2);
             btnEditar.Name = "btnEditar";
             btnEditar.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            btnEditar.Size = new Size(225, 56);
+            btnEditar.Size = new Size(197, 42);
             btnEditar.TabIndex = 3;
             btnEditar.Text = "Editar";
             // 
@@ -437,10 +443,11 @@
             btnEliminar.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnEliminar.Font = new Font("Segoe UI", 9F);
             btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(732, 75);
+            btnEliminar.Location = new Point(640, 56);
+            btnEliminar.Margin = new Padding(3, 2, 3, 2);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            btnEliminar.Size = new Size(225, 56);
+            btnEliminar.Size = new Size(197, 42);
             btnEliminar.TabIndex = 4;
             btnEliminar.Text = "Eliminar";
             // 
@@ -453,24 +460,26 @@
             btnCancelarEdicion.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnCancelarEdicion.Font = new Font("Segoe UI", 9F);
             btnCancelarEdicion.ForeColor = Color.White;
-            btnCancelarEdicion.Location = new Point(1049, 65);
+            btnCancelarEdicion.Location = new Point(918, 49);
+            btnCancelarEdicion.Margin = new Padding(3, 2, 3, 2);
             btnCancelarEdicion.Name = "btnCancelarEdicion";
             btnCancelarEdicion.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            btnCancelarEdicion.Size = new Size(225, 56);
+            btnCancelarEdicion.Size = new Size(197, 42);
             btnCancelarEdicion.TabIndex = 5;
             btnCancelarEdicion.Text = "Cancelar edición";
             btnCancelarEdicion.Click += btnCancelar_Click;
             // 
             // frmGastosFijos
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1448, 868);
+            ClientSize = new Size(1267, 651);
             Controls.Add(btnCancelarEdicion);
             Controls.Add(btnEliminar);
             Controls.Add(btnEditar);
             Controls.Add(dgvMovimientos);
             Controls.Add(panelLateral);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "frmGastosFijos";
             Text = "GastosFijoscs";
             panelLateral.ResumeLayout(false);

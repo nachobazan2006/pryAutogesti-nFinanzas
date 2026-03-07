@@ -1,4 +1,5 @@
-﻿using pryAutogestiónFinanzas.Helpers;
+﻿using pryAutogestionFinanzas;
+using pryAutogestiónFinanzas.Helpers;
 using System;
 using System.Windows.Forms;
 
