@@ -145,5 +145,10 @@ namespace pryAutogestionFinanzas
             ActivarBoton(btnEstadisticas);
             AbrirFormularioEnContenedor(new frmEstadisticas());
         }
+
+        private void btnEstadisticas_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

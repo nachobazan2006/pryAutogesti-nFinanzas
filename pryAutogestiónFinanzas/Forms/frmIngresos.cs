@@ -467,5 +467,15 @@ namespace pryAutogestionFinanzas
                 MessageBox.Show("Error al cancelar: " + ex.Message);
             }
         }
+
+        private void guna2CustomGradientPanel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblAgregarIngreso_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

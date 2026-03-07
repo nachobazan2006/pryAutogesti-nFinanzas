@@ -377,5 +377,10 @@ namespace pryAutogestionFinanzas
             return decimal.TryParse(s, NumberStyles.Any, CultureInfo.CurrentCulture, out value)
                 || decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
         }
+
+        private void guna2CustomGradientPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

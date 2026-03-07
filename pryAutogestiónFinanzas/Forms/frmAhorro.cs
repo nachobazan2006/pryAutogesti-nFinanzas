@@ -33,8 +33,8 @@ namespace pryAutogestionFinanzas
             btnAgregarMeta.Click -= btnAgregarMeta_Click;
             btnAgregarMeta.Click += btnAgregarMeta_Click;
 
-            btnEditar.Click -= btnEditar_Click;
-            btnEditar.Click += btnEditar_Click;
+            
+           
 
             btnEliminar.Click -= btnEliminar_Click;
             btnEliminar.Click += btnEliminar_Click;
