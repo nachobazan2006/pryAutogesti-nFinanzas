@@ -80,6 +80,7 @@
             guna2CustomGradientPanel1 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             guna2CustomGradientPanel3 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             panelLateral = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
+            colCreadoPor = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvMovimientos).BeginInit();
             guna2CustomGradientPanel1.SuspendLayout();
             guna2CustomGradientPanel3.SuspendLayout();
@@ -292,7 +293,7 @@
             dgvMovimientos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvMovimientos.ColumnHeadersHeight = 4;
             dgvMovimientos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dgvMovimientos.Columns.AddRange(new DataGridViewColumn[] { colId, colCategoria, colMonto, colFecha, colMedioPago, colDescripcion });
+            dgvMovimientos.Columns.AddRange(new DataGridViewColumn[] { colId, colCategoria, colMonto, colFecha, colMedioPago, colDescripcion, colCreadoPor });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -497,6 +498,13 @@
             panelLateral.Size = new Size(345, 843);
             panelLateral.TabIndex = 6;
             // 
+            // colCreadoPor
+            // 
+            colCreadoPor.HeaderText = "Usuario";
+            colCreadoPor.MinimumWidth = 6;
+            colCreadoPor.Name = "colCreadoPor";
+            colCreadoPor.ReadOnly = true;
+            // 
             // frmGastosLibres
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -539,5 +547,6 @@
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel1;
         private Guna.UI2.WinForms.Guna2CustomGradientPanel panelLateral;
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel3;
+        private DataGridViewTextBoxColumn colCreadoPor;
     }
 }

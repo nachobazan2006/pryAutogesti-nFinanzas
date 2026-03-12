@@ -74,6 +74,7 @@
             panelLateral = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             lblAgregueMeta = new Label();
             txtMonto = new Guna.UI2.WinForms.Guna2TextBox();
+            colCreadoPor = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvAportes).BeginInit();
             guna2CustomGradientPanel1.SuspendLayout();
             guna2CustomGradientPanel3.SuspendLayout();
@@ -221,7 +222,7 @@
             dgvAportes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvAportes.ColumnHeadersHeight = 22;
             dgvAportes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dgvAportes.Columns.AddRange(new DataGridViewColumn[] { colMeta, colFecha, colMonto, colNotas });
+            dgvAportes.Columns.AddRange(new DataGridViewColumn[] { colMeta, colFecha, colMonto, colNotas, colCreadoPor });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -357,7 +358,7 @@
             guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges22;
             guna2CustomGradientPanel1.Size = new Size(1448, 868);
             guna2CustomGradientPanel1.TabIndex = 5;
-            guna2CustomGradientPanel1.Paint += guna2CustomGradientPanel1_Paint;
+            
             // 
             // guna2CustomGradientPanel3
             // 
@@ -434,6 +435,12 @@
             txtMonto.Size = new Size(254, 36);
             txtMonto.TabIndex = 5;
             // 
+            // colCreadoPor
+            // 
+            colCreadoPor.HeaderText = "Usuario";
+            colCreadoPor.MinimumWidth = 6;
+            colCreadoPor.Name = "colCreadoPor";
+            // 
             // frmAporte
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -472,5 +479,6 @@
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel3;
         private Guna.UI2.WinForms.Guna2TextBox txtMonto;
         private Label lblAgregueMeta;
+        private DataGridViewTextBoxColumn colCreadoPor;
     }
 }

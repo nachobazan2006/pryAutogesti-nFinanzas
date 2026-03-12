@@ -2,6 +2,7 @@
 using pryAutogestionFinanzas.Models;
 using pryAutogestionFinanzas.Services;
 using pryAutoGestionFinanzas.Models;
+using pryAutogestiónFinanzas.Helpers;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace pryAutogestionFinanzas
         // Modo edición
         private bool _modoEdicion = false;
         private int? _idEditando = null;
+        private string _creadoPorEditando = "";
 
         public frmGastosLibres()
         {
@@ -27,14 +29,24 @@ namespace pryAutogestionFinanzas
             _catalogosService = new CatalogosService(api);
             _movimientosService = new MovimientosService(api);
 
-            // ✅ Asegura Load
+            // Evita dobles enganches
+            this.Load -= frmGastosLibres_Load;
             this.Load += frmGastosLibres_Load;
 
-            // Eventos (por si el designer no los enganchó)
+            dgvMovimientos.CellClick -= dgvMovimientos_CellClick;
             dgvMovimientos.CellClick += dgvMovimientos_CellClick;
+
+            btnAgregar.Click -= btnAgregar_Click;
             btnAgregar.Click += btnAgregar_Click;
+
+            btnEditar.Click -= btnEditar_Click;
             btnEditar.Click += btnEditar_Click;
+
+            btnEliminar.Click -= btnEliminar_Click;
             btnEliminar.Click += btnEliminar_Click;
+
+            btnCancelarEdicion.Click -= btnCancelar_Click;
+            btnCancelarEdicion.Click += btnCancelar_Click;
         }
 
         // --------------------------
@@ -126,7 +138,6 @@ namespace pryAutogestionFinanzas
             dgvMovimientos.AlternatingRowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(35, 90, 180);
             dgvMovimientos.AlternatingRowsDefaultCellStyle.SelectionForeColor = Color.White;
 
-            // ✅ colId (oculta, pero vital para editar/eliminar)
             if (dgvMovimientos.Columns.Contains("colId"))
             {
                 dgvMovimientos.Columns["colId"].DataPropertyName = "Id";
@@ -161,6 +172,13 @@ namespace pryAutogestionFinanzas
             {
                 dgvMovimientos.Columns["colDescripcion"].DataPropertyName = "Descripcion";
                 dgvMovimientos.Columns["colDescripcion"].FillWeight = 160;
+            }
+
+            // 👇 PREPARADO para mostrar usuario cuando agregues la columna al DGV
+            if (dgvMovimientos.Columns.Contains("colCreadoPor"))
+            {
+                dgvMovimientos.Columns["colCreadoPor"].DataPropertyName = "CreadoPor";
+                dgvMovimientos.Columns["colCreadoPor"].FillWeight = 90;
             }
 
             dgvMovimientos.ClearSelection();
@@ -256,10 +274,13 @@ namespace pryAutogestionFinanzas
         {
             _modoEdicion = false;
             _idEditando = null;
+            _creadoPorEditando = "";
             btnAgregar.Text = "Agregar";
         }
 
-        // Precarga desde fila seleccionada
+        // --------------------------
+        // SELECCIÓN
+        // --------------------------
         private void dgvMovimientos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -271,15 +292,13 @@ namespace pryAutogestionFinanzas
             if (dgvMovimientos.CurrentRow?.DataBoundItem is not MovimientoDto row)
                 return;
 
-            // guardamos id para edición (aunque igual lo setea btnEditar)
             _idEditando = row.Id;
+            _creadoPorEditando = row.CreadoPor ?? "";
 
-            // inputs
             txtMonto.Text = row.Monto.ToString("0.##");
             txtDescripcion.Text = row.Descripcion ?? "";
             dtpFecha.Value = row.Fecha;
 
-            // combos por texto (vienen nombres)
             SeleccionarComboPorTexto(cboCategoria, row.Categoria);
             SeleccionarComboPorTexto(cboMedioPago, row.MedioPago);
         }
@@ -298,7 +317,7 @@ namespace pryAutogestionFinanzas
         }
 
         // --------------------------
-        // EDITAR (entrar a modo edición)
+        // EDITAR
         // --------------------------
         private void btnEditar_Click(object sender, EventArgs e)
         {
@@ -310,7 +329,6 @@ namespace pryAutogestionFinanzas
                 return;
             }
 
-            // Precarga y entra modo edición
             PrecargarDesdeFila();
             EntrarModoEdicion(row.Id);
         }
@@ -365,6 +383,10 @@ namespace pryAutogestionFinanzas
                 if (!ValidarFormulario(out var monto))
                     return;
 
+                var creadoPor = _modoEdicion
+                    ? (string.IsNullOrWhiteSpace(_creadoPorEditando) ? Session.Usuario : _creadoPorEditando)
+                    : Session.Usuario;
+
                 var dto = new CreateMovimientoDto
                 {
                     Tipo = "Egreso",
@@ -372,7 +394,8 @@ namespace pryAutogestionFinanzas
                     MedioPagoId = (int)cboMedioPago.SelectedValue,
                     Monto = monto,
                     Fecha = dtpFecha.Value,
-                    Descripcion = (txtDescripcion.Text ?? "").Trim()
+                    Descripcion = (txtDescripcion.Text ?? "").Trim(),
+                    CreadoPor = creadoPor
                 };
 
                 if (_modoEdicion)
@@ -402,21 +425,16 @@ namespace pryAutogestionFinanzas
             }
         }
 
+        // --------------------------
+        // CANCELAR
+        // --------------------------
         private async void btnCancelar_Click(object sender, EventArgs e)
         {
             try
             {
-                // Salir edición + limpiar UI
                 SalirModoEdicion();
-                LimpiarFormulario(); // en ingresos es LimpiarForm()
-
-                // Limpia selección de grilla
+                LimpiarFormulario();
                 dgvMovimientos.ClearSelection();
-
-                // (Opcional) recargar para dejar todo consistente
-                // GastosLibres: await CargarEgresosEnGrillaAsync();
-                // GastosFijos:  await CargarFijosEnGrillaAsync();
-                // Ingresos:     await CargarIngresosEnGrillaAsync();
             }
             catch (Exception ex)
             {

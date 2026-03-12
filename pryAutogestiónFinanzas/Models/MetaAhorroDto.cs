@@ -10,5 +10,6 @@ namespace pryAutogestionFinanzas.Models
         public string Moneda { get; set; } = "";
         public string LugarGuardado { get; set; } = "";
         public DateTime? FechaObjetivo { get; set; }
+        public string? CreadoPor { get; set; }
     }
 }

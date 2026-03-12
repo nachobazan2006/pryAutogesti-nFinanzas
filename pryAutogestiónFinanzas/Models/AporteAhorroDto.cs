@@ -9,5 +9,6 @@ namespace pryAutogestionFinanzas.Models
         public decimal Monto { get; set; }
         public DateTime Fecha { get; set; }
         public string? Notas { get; set; }
+        public string? CreadoPor { get; set; }
     }
 }

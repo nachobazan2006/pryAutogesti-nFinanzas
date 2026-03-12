@@ -1,6 +1,7 @@
 ﻿using pryAutogestionFinanzas;
 using pryAutogestiónFinanzas.Helpers;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace pryAutogestiónFinanzas
@@ -10,7 +11,15 @@ namespace pryAutogestiónFinanzas
         public frmLogin()
         {
             InitializeComponent();
+
+            // Evitar dobles enganches si el Designer también los tiene
+            btnCarla.Click -= btnCarla_Click;
+            btnCarla.Click += btnCarla_Click;
+
+            btnChino.Click -= btnChino_Click;
+            btnChino.Click += btnChino_Click;
         }
+
         private void SetActiveNavButton(Guna.UI2.WinForms.Guna2Button activeBtn)
         {
             foreach (Control c in panel1.Controls)
@@ -22,17 +31,19 @@ namespace pryAutogestiónFinanzas
                 }
             }
 
-            activeBtn.FillColor = Color.FromArgb(113, 99, 199); // activo (violeta)
+            activeBtn.FillColor = Color.FromArgb(113, 99, 199); // activo
             activeBtn.ForeColor = Color.White;
         }
 
         private void btnCarla_Click(object sender, EventArgs e)
         {
+            SetActiveNavButton(btnCarla);
             IngresarComo("Carla");
         }
 
         private void btnChino_Click(object sender, EventArgs e)
         {
+            SetActiveNavButton(btnChino);
             IngresarComo("Chino");
         }
 
@@ -42,13 +53,11 @@ namespace pryAutogestiónFinanzas
 
             var menu = new frmMenuPrincipal1();
 
-            // Opcional (recomendado): cerrar todo si cierran el menú
+            // Cerrar login cuando se cierre el menú
             menu.FormClosed += (s, e) => this.Close();
 
             this.Hide();
             menu.Show();
         }
-
-       
     }
 }

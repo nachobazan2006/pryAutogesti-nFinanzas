@@ -2,6 +2,7 @@
 using pryAutogestionFinanzas.Models;
 using pryAutogestionFinanzas.Services;
 using pryAutoGestionFinanzas.Models;
+using pryAutogestiónFinanzas.Helpers;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace pryAutogestionFinanzas
         // Modo edición
         private bool _modoEdicion = false;
         private int? _idEditando = null;
+        private string _creadoPorEditando = "";
 
         public frmGastosFijos()
         {
@@ -27,14 +29,24 @@ namespace pryAutogestionFinanzas
             _catalogosService = new CatalogosService(api);
             _movimientosService = new MovimientosService(api);
 
-            // Asegura Load (por si el Designer no lo enganchó)
+            // Evita dobles enganches
+            this.Load -= frmGastosFijos_Load;
             this.Load += frmGastosFijos_Load;
 
-            // Eventos
+            dgvMovimientos.CellClick -= dgvMovimientos_CellClick;
             dgvMovimientos.CellClick += dgvMovimientos_CellClick;
+
+            btnEditar.Click -= btnEditar_Click;
             btnEditar.Click += btnEditar_Click;
+
+            btnEliminar.Click -= btnEliminar_Click;
             btnEliminar.Click += btnEliminar_Click;
+
+            btnAgregar.Click -= btnAgregar_Click;
             btnAgregar.Click += btnAgregar_Click;
+
+            btnCancelarEdicion.Click -= btnCancelar_Click;
+            btnCancelarEdicion.Click += btnCancelar_Click;
         }
 
         // --------------------------
@@ -47,7 +59,7 @@ namespace pryAutogestionFinanzas
                 ConfigurarGrilla();
                 await CargarCatalogosAsync();
                 await CargarFijosEnGrillaAsync();
-                SalirModoEdicion(); // arranca limpio
+                SalirModoEdicion();
             }
             catch (Exception ex)
             {
@@ -76,7 +88,7 @@ namespace pryAutogestionFinanzas
         }
 
         // --------------------------
-        // CARGAR SOLO FIJOS EN GRILLA (mapeo a GridRow)
+        // CARGAR SOLO FIJOS EN GRILLA
         // --------------------------
         private async Task CargarFijosEnGrillaAsync()
         {
@@ -97,7 +109,6 @@ namespace pryAutogestionFinanzas
         {
             var desc = (x.Descripcion ?? "").Trim();
 
-            // Esperado: [FIJO] Nombre|Notas: ...
             var sinPrefijo = desc;
             if (sinPrefijo.StartsWith("[FIJO]", StringComparison.OrdinalIgnoreCase))
                 sinPrefijo = sinPrefijo.Substring(6).Trim();
@@ -109,7 +120,6 @@ namespace pryAutogestionFinanzas
             if (partes.Length >= 1) nombre = partes[0].Trim();
             if (partes.Length >= 2) notas = partes[1].Trim();
 
-            // Fallback viejo: "\nNotas:"
             if (partes.Length == 1 && sinPrefijo.Contains("\nNotas:"))
             {
                 var p2 = sinPrefijo.Split(new[] { "\nNotas:" }, StringSplitOptions.None);
@@ -125,7 +135,8 @@ namespace pryAutogestionFinanzas
                 Monto = x.Monto,
                 Vencimiento = x.Fecha,
                 MedioPago = x.MedioPago ?? "",
-                Notas = notas
+                Notas = notas,
+                CreadoPor = x.CreadoPor ?? ""
             };
         }
 
@@ -164,11 +175,10 @@ namespace pryAutogestionFinanzas
 
             dgvMovimientos.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(14, 22, 42);
 
-            // Mapeo columnas (según tus nombres)
             if (dgvMovimientos.Columns.Contains("colId"))
             {
                 dgvMovimientos.Columns["colId"].DataPropertyName = "Id";
-                dgvMovimientos.Columns["colId"].Visible = false; // recomendado
+                dgvMovimientos.Columns["colId"].Visible = false;
             }
 
             if (dgvMovimientos.Columns.Contains("colNombreGasto"))
@@ -195,10 +205,14 @@ namespace pryAutogestionFinanzas
 
             if (dgvMovimientos.Columns.Contains("colNotas"))
                 dgvMovimientos.Columns["colNotas"].DataPropertyName = "Notas";
+
+            // 👇 PREPARADO para mostrar usuario si agregás la columna
+            if (dgvMovimientos.Columns.Contains("colCreadoPor"))
+                dgvMovimientos.Columns["colCreadoPor"].DataPropertyName = "CreadoPor";
         }
 
         // --------------------------
-        // SELECCIÓN EN GRILLA -> precarga
+        // SELECCIÓN EN GRILLA
         // --------------------------
         private void dgvMovimientos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -211,13 +225,13 @@ namespace pryAutogestionFinanzas
             if (dgvMovimientos.CurrentRow?.DataBoundItem is not GastoFijoGridRow row) return;
 
             _idEditando = row.Id;
+            _creadoPorEditando = row.CreadoPor ?? "";
 
             txtNombreGasto.Text = row.NombreGasto;
             txtMonto.Text = row.Monto.ToString("0.##");
             txtNotas.Text = row.Notas;
             dtpVencimiento.Value = row.Vencimiento;
 
-            // Setear combos por texto (porque la grilla trae Nombre, no Id)
             SeleccionarComboPorTexto(cboCategoria, row.Categoria);
             SeleccionarComboPorTexto(cboMedioPago, row.MedioPago);
         }
@@ -236,7 +250,7 @@ namespace pryAutogestionFinanzas
         }
 
         // --------------------------
-        // BOTÓN EDITAR: entra a modo edición
+        // BOTÓN EDITAR
         // --------------------------
         private void btnEditar_Click(object sender, EventArgs e)
         {
@@ -269,6 +283,7 @@ namespace pryAutogestionFinanzas
         {
             _modoEdicion = false;
             _idEditando = null;
+            _creadoPorEditando = "";
             btnAgregar.Text = "Agregar";
             dgvMovimientos.ClearSelection();
         }
@@ -311,7 +326,7 @@ namespace pryAutogestionFinanzas
         }
 
         // --------------------------
-        // AGREGAR / ACTUALIZAR (mismo botón)
+        // AGREGAR / ACTUALIZAR
         // --------------------------
         private async void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -335,6 +350,10 @@ namespace pryAutogestionFinanzas
                 var notas = (txtNotas.Text ?? "").Trim();
                 var descripcionFinal = $"[FIJO] {nombre}|Notas: {notas}";
 
+                var creadoPor = _modoEdicion
+                    ? (string.IsNullOrWhiteSpace(_creadoPorEditando) ? Session.Usuario : _creadoPorEditando)
+                    : Session.Usuario;
+
                 var dto = new CreateMovimientoDto
                 {
                     Tipo = "Egreso",
@@ -342,7 +361,8 @@ namespace pryAutogestionFinanzas
                     MedioPagoId = (int)cboMedioPago.SelectedValue,
                     Monto = monto,
                     Fecha = dtpVencimiento.Value,
-                    Descripcion = descripcionFinal
+                    Descripcion = descripcionFinal,
+                    CreadoPor = creadoPor
                 };
 
                 if (_modoEdicion)
@@ -387,7 +407,7 @@ namespace pryAutogestionFinanzas
         }
 
         // --------------------------
-        // UI (botón activo)
+        // UI
         // --------------------------
         private void SetActiveButton(Guna2Button btn)
         {
@@ -400,7 +420,7 @@ namespace pryAutogestionFinanzas
         }
 
         // --------------------------
-        // ViewModel para grilla de FIJOS
+        // ViewModel para grilla
         // --------------------------
         private class GastoFijoGridRow
         {
@@ -411,23 +431,16 @@ namespace pryAutogestionFinanzas
             public DateTime Vencimiento { get; set; }
             public string MedioPago { get; set; } = "";
             public string Notas { get; set; } = "";
+            public string CreadoPor { get; set; } = "";
         }
 
         private async void btnCancelar_Click(object sender, EventArgs e)
         {
             try
             {
-                // Salir edición + limpiar UI
                 SalirModoEdicion();
-                LimpiarFormulario(); // en ingresos es LimpiarForm()
-
-                // Limpia selección de grilla
+                LimpiarFormulario();
                 dgvMovimientos.ClearSelection();
-
-                // (Opcional) recargar para dejar todo consistente
-                // GastosLibres: await CargarEgresosEnGrillaAsync();
-                // GastosFijos:  await CargarFijosEnGrillaAsync();
-                // Ingresos:     await CargarIngresosEnGrillaAsync();
             }
             catch (Exception ex)
             {

@@ -66,7 +66,7 @@
             txtObjetivo = new Guna.UI2.WinForms.Guna2TextBox();
             txtNombreMeta = new Guna.UI2.WinForms.Guna2TextBox();
             dgvAhorro = new Guna.UI2.WinForms.Guna2DataGridView();
-            colMetaAhorro = new DataGridViewTextBoxColumn();
+            colNombre = new DataGridViewTextBoxColumn();
             colObjetivo = new DataGridViewTextBoxColumn();
             colMoneda = new DataGridViewTextBoxColumn();
             colLugarGuardado = new DataGridViewTextBoxColumn();
@@ -77,6 +77,7 @@
             btnCancelar = new Guna.UI2.WinForms.Guna2Button();
             btnEliminar = new Guna.UI2.WinForms.Guna2Button();
             btnEditar = new Guna.UI2.WinForms.Guna2Button();
+            colCreadoPor = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvAhorro).BeginInit();
             guna2CustomGradientPanel1.SuspendLayout();
             guna2CustomGradientPanel2.SuspendLayout();
@@ -291,7 +292,7 @@
             dgvAhorro.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvAhorro.ColumnHeadersHeight = 4;
             dgvAhorro.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dgvAhorro.Columns.AddRange(new DataGridViewColumn[] { colMetaAhorro, colObjetivo, colMoneda, colLugarGuardado, colFechaObjetivo, colId });
+            dgvAhorro.Columns.AddRange(new DataGridViewColumn[] { colNombre, colObjetivo, colMoneda, colLugarGuardado, colFechaObjetivo, colId, colCreadoPor });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -329,11 +330,11 @@
             dgvAhorro.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvAhorro.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             // 
-            // colMetaAhorro
+            // colNombre
             // 
-            colMetaAhorro.HeaderText = "Meta";
-            colMetaAhorro.MinimumWidth = 6;
-            colMetaAhorro.Name = "colMetaAhorro";
+            colNombre.HeaderText = "Meta";
+            colNombre.MinimumWidth = 6;
+            colNombre.Name = "colNombre";
             // 
             // colObjetivo
             // 
@@ -478,6 +479,12 @@
             btnEditar.Text = "Editar";
             btnEditar.Click += btnEditar_Click;
             // 
+            // colCreadoPor
+            // 
+            colCreadoPor.HeaderText = "Usuario";
+            colCreadoPor.MinimumWidth = 6;
+            colCreadoPor.Name = "colCreadoPor";
+            // 
             // frmAhorros
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -509,12 +516,6 @@
         private Guna.UI2.WinForms.Guna2Button btnAgregarMeta;
         private Guna.UI2.WinForms.Guna2DataGridView dgvAhorro;
         private Label lblAgregueMeta;
-        private DataGridViewTextBoxColumn colMetaAhorro;
-        private DataGridViewTextBoxColumn colObjetivo;
-        private DataGridViewTextBoxColumn colMoneda;
-        private DataGridViewTextBoxColumn colLugarGuardado;
-        private DataGridViewTextBoxColumn colFechaObjetivo;
-        private DataGridViewTextBoxColumn colId;
         
         private Guna.UI2.WinForms.Guna2Button btnEliminar;
        
@@ -523,5 +524,12 @@
         private Guna.UI2.WinForms.Guna2Button btnCancelar;
         private Guna.UI2.WinForms.Guna2Button guna2Button2;
         private Guna.UI2.WinForms.Guna2Button btnEditar;
+        private DataGridViewTextBoxColumn colNombre;
+        private DataGridViewTextBoxColumn colObjetivo;
+        private DataGridViewTextBoxColumn colMoneda;
+        private DataGridViewTextBoxColumn colLugarGuardado;
+        private DataGridViewTextBoxColumn colFechaObjetivo;
+        private DataGridViewTextBoxColumn colId;
+        private DataGridViewTextBoxColumn colCreadoPor;
     }
 }

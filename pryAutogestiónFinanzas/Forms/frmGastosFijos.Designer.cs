@@ -86,6 +86,7 @@
             guna2CustomGradientPanel3 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             panelLateral = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             lblNotass = new Label();
+            colCreadoPor = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvMovimientos).BeginInit();
             guna2CustomGradientPanel2.SuspendLayout();
             guna2CustomGradientPanel3.SuspendLayout();
@@ -325,7 +326,7 @@
             dgvMovimientos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvMovimientos.ColumnHeadersHeight = 4;
             dgvMovimientos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dgvMovimientos.Columns.AddRange(new DataGridViewColumn[] { colId, colNombreGasto, colCategoria, colMonto, colVencimiento, colMedioPago, colNotas });
+            dgvMovimientos.Columns.AddRange(new DataGridViewColumn[] { colId, colNombreGasto, colCategoria, colMonto, colVencimiento, colMedioPago, colNotas, colCreadoPor });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Century Gothic", 10.2F, FontStyle.Italic, GraphicsUnit.Point, 0);
@@ -543,6 +544,12 @@
             lblNotass.TabIndex = 6;
             lblNotass.Text = "Notas (opcional)";
             // 
+            // colCreadoPor
+            // 
+            colCreadoPor.HeaderText = "Usuario";
+            colCreadoPor.MinimumWidth = 6;
+            colCreadoPor.Name = "colCreadoPor";
+            // 
             // frmGastosFijos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -592,5 +599,6 @@
         private Guna.UI2.WinForms.Guna2CustomGradientPanel panelLateral;
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel3;
         private Label lblNotass;
+        private DataGridViewTextBoxColumn colCreadoPor;
     }
 }

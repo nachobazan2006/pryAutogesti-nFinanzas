@@ -1,4 +1,5 @@
-﻿using pryAutogestionFinanzas.Models;
+﻿using pryAutogestiónFinanzas.Helpers;
+using pryAutogestionFinanzas.Models;
 using pryAutogestionFinanzas.Services;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace pryAutogestionFinanzas
 
         private bool _modoEdicion = false;
         private int _idEditando = 0;
+        private string _creadoPorEditando = "";
 
         public frmAhorros()
         {
@@ -33,8 +35,8 @@ namespace pryAutogestionFinanzas
             btnAgregarMeta.Click -= btnAgregarMeta_Click;
             btnAgregarMeta.Click += btnAgregarMeta_Click;
 
-            
-           
+            btnEditar.Click -= btnEditar_Click;
+            btnEditar.Click += btnEditar_Click;
 
             btnEliminar.Click -= btnEliminar_Click;
             btnEliminar.Click += btnEliminar_Click;
@@ -102,18 +104,16 @@ namespace pryAutogestionFinanzas
 
             dgvAhorro.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(14, 22, 42);
 
-            // Binding
             dgvAhorro.DataSource = _bs;
 
-            // Mapear a DataTable
             Map("colId", "Id", visible: false);
             Map("colNombre", "Nombre");
             Map("colObjetivo", "Objetivo");
             Map("colMoneda", "Moneda");
             Map("colLugarGuardado", "LugarGuardado");
             Map("colFechaObjetivo", "FechaObjetivo");
+            Map("colCreadoPor", "CreadoPor");
 
-            // Formatos
             if (dgvAhorro.Columns.Contains("colObjetivo"))
             {
                 var col = dgvAhorro.Columns["colObjetivo"];
@@ -156,18 +156,20 @@ namespace pryAutogestionFinanzas
             dt.Columns.Add("Moneda", typeof(string));
             dt.Columns.Add("LugarGuardado", typeof(string));
             dt.Columns.Add("FechaObjetivo", typeof(DateTime));
+            dt.Columns.Add("CreadoPor", typeof(string));
 
             foreach (var m in metas.OrderByDescending(x => x.Id))
             {
-                // si FechaObjetivo viene null, guardamos hoy para que no rompa el DataTable DateTime
                 var fecha = m.FechaObjetivo ?? DateTime.Now;
+
                 dt.Rows.Add(
                     m.Id,
                     (m.Nombre ?? "").Trim(),
                     m.Objetivo,
                     (m.Moneda ?? "").Trim(),
                     (m.LugarGuardado ?? "").Trim(),
-                    fecha
+                    fecha,
+                    (m.CreadoPor ?? "").Trim()
                 );
             }
 
@@ -213,6 +215,10 @@ namespace pryAutogestionFinanzas
                     return;
                 }
 
+                var creadoPor = _modoEdicion
+                    ? (string.IsNullOrWhiteSpace(_creadoPorEditando) ? Session.Usuario : _creadoPorEditando)
+                    : Session.Usuario;
+
                 var dto = new MetaAhorroDto
                 {
                     Id = _modoEdicion ? _idEditando : 0,
@@ -220,7 +226,8 @@ namespace pryAutogestionFinanzas
                     Objetivo = objetivo,
                     Moneda = moneda,
                     LugarGuardado = lugar,
-                    FechaObjetivo = dtpFechaObjetivo.Value
+                    FechaObjetivo = dtpFechaObjetivo.Value,
+                    CreadoPor = creadoPor
                 };
 
                 if (!_modoEdicion)
@@ -249,7 +256,7 @@ namespace pryAutogestionFinanzas
         // --------------------------
         private void btnEditar_Click(object sender, EventArgs e)
         {
-            var (ok, id, nombre, objetivo, moneda, lugar, fechaObj) = LeerFilaSeleccionada();
+            var (ok, id, nombre, objetivo, moneda, lugar, fechaObj, creadoPor) = LeerFilaSeleccionada();
             if (!ok)
             {
                 MessageBox.Show("Seleccioná una meta para editar.");
@@ -258,6 +265,7 @@ namespace pryAutogestionFinanzas
 
             _modoEdicion = true;
             _idEditando = id;
+            _creadoPorEditando = creadoPor;
 
             txtNombreMeta.Text = nombre;
             txtObjetivo.Text = objetivo.ToString("0.##", CultureInfo.CurrentCulture);
@@ -274,7 +282,7 @@ namespace pryAutogestionFinanzas
         // --------------------------
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
-            var (ok, id, nombre, _, _, _, _) = LeerFilaSeleccionada();
+            var (ok, id, nombre, _, _, _, _, _) = LeerFilaSeleccionada();
             if (!ok)
             {
                 MessageBox.Show("Seleccioná una meta para eliminar.");
@@ -320,6 +328,7 @@ namespace pryAutogestionFinanzas
         {
             _modoEdicion = false;
             _idEditando = 0;
+            _creadoPorEditando = "";
 
             btnAgregarMeta.Text = "Agregar meta";
             btnCancelar.Enabled = false;
@@ -337,11 +346,12 @@ namespace pryAutogestionFinanzas
         // --------------------------
         // Helpers selección
         // --------------------------
-        private (bool ok, int id, string nombre, decimal objetivo, string moneda, string lugar, DateTime fechaObjetivo) LeerFilaSeleccionada()
+        private (bool ok, int id, string nombre, decimal objetivo, string moneda, string lugar, DateTime fechaObjetivo, string creadoPor) LeerFilaSeleccionada()
         {
             try
             {
-                if (dgvAhorro.CurrentRow == null) return (false, 0, "", 0m, "", "", DateTime.Now);
+                if (dgvAhorro.CurrentRow == null)
+                    return (false, 0, "", 0m, "", "", DateTime.Now, "");
 
                 var id = Convert.ToInt32(dgvAhorro.CurrentRow.Cells["colId"].Value);
                 var nombre = Convert.ToString(dgvAhorro.CurrentRow.Cells["colNombre"].Value) ?? "";
@@ -350,11 +360,15 @@ namespace pryAutogestionFinanzas
                 var lugar = Convert.ToString(dgvAhorro.CurrentRow.Cells["colLugarGuardado"].Value) ?? "";
                 var fecha = Convert.ToDateTime(dgvAhorro.CurrentRow.Cells["colFechaObjetivo"].Value);
 
-                return (true, id, nombre, objetivo, moneda, lugar, fecha);
+                string creadoPor = "";
+                if (dgvAhorro.Columns.Contains("colCreadoPor"))
+                    creadoPor = Convert.ToString(dgvAhorro.CurrentRow.Cells["colCreadoPor"].Value) ?? "";
+
+                return (true, id, nombre, objetivo, moneda, lugar, fecha, creadoPor);
             }
             catch
             {
-                return (false, 0, "", 0m, "", "", DateTime.Now);
+                return (false, 0, "", 0m, "", "", DateTime.Now, "");
             }
         }
 
